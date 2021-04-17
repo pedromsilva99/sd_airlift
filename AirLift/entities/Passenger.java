@@ -31,7 +31,7 @@ public class Passenger extends Thread{
 	    *     @param airport reference to the departure airport
 	    */
 
-	    public Passenger  (String name, int hostessId, DepartureAirport airport)
+	    public Passenger  (String name, int passengerId, DepartureAirport airport)
 	    {
 	       super (name);
 	       this.passengerId = passengerId;
