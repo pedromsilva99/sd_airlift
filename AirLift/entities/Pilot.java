@@ -34,7 +34,6 @@ public class Pilot extends Thread{
 	    {
 	       super (name);
 	       this.pilotId = pilotId;
-	       pilotState = PilotStates.ATTRANSFERGATE;
 	       this.airport = airport;
 	    }
 	    
@@ -91,7 +90,11 @@ public class Pilot extends Thread{
 	     {
 	    	 GenericIO.writelnString ("\nPILOT Run \n");
 	    	 parkAtTransferGate();
+	    	 pilotState = PilotStates.ATTRANSFERGATE;
 	    	 airport.informPlaneReadyForBoarding();
+	    	 pilotState = PilotStates.READYFORBOARDING;
+	    	 airport.waitForAllInBoard();
+	    	 pilotState = PilotStates.WAITINGFORBOARDING;
 	     }
 
 	    /**

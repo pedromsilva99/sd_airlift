@@ -27,7 +27,7 @@ public class Passenger extends Thread{
 	    *   Instantiation of a Passenger thread.
 	    *
 	    *     @param name thread name
-	    *     @param barberId Passenger id
+	    *     @param passengerId Passenger id
 	    *     @param airport reference to the departure airport
 	    */
 
@@ -93,6 +93,9 @@ public class Passenger extends Thread{
 	    	 GenericIO.writelnString ("Run Passenger "+ passengerId+"\n");
 	    	 travelToAirport();
 	    	 airport.waitInQueue();
+	    	 airport.showDocuments();
+	    	 
+	    	 
 	    	 //airport.waitForEndOfFlight();
 	    	 //leave the plane
 	    	 

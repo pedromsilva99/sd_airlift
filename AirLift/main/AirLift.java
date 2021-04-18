@@ -3,8 +3,17 @@ package main;
 import entities.*;
 import genclass.GenericIO;
 import sharedRegions.*;
+/**
+ *   Simulation of the Problem of the Sleeping Barbers.
+ *   
+ */
 public class AirLift {
-
+	 /**
+	   *    Main class for the Airport Rhapsody Problem. It launches the threads for all entities of the problem.
+	   *
+	   *    @param args runtime arguments
+	   */
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Pilot [] pilot = new Pilot [SimulPar.nPilots];				// array of pilot threads

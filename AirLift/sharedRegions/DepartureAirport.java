@@ -11,7 +11,8 @@ public class DepartureAirport {
 	   *  Control variable for the plane
 	   */
 	
-	   boolean planeReady = false;
+	   boolean plane_at_transfer_gate= false;
+	   boolean plane_ready_to_fly = false;
 	
 	   /**
 	   *  Number of people in line.
@@ -96,8 +97,10 @@ public class DepartureAirport {
 	      { try
 	        { 
 	    	  GenericIO.writelnString ("\033[41mPassengers in line " + nLine+"\033[0m");
-	    	  if (passengersOnBoard >= SimulPar.minInPlane)
-	    		return HostessStates.READYTOFLY;
+	    	  if (passengersOnBoard >= SimulPar.minInPlane) {
+	    		  plane_ready_to_fly = true;  
+	    		  return HostessStates.READYTOFLY;
+	    		}
 			
 	    	  wait();        
 	        }
@@ -114,7 +117,7 @@ public class DepartureAirport {
 	   
 	   public synchronized boolean prepareForPassBoarding ()  //hostess function
 	   {   
-	      while (!planeReady)                                 // the hostess waits for the plane to be ready
+	      while (!plane_at_transfer_gate)                                 // the hostess waits for the plane to be ready
 	      { try
 	        { 
 	    	  GenericIO.writelnString ("\n\033[0;34mHostess Waiting for Plane\033[0m\n");
@@ -129,6 +132,11 @@ public class DepartureAirport {
 	      ((Hostess) Thread.currentThread ()).setHostessState (HostessStates.WAITFORPASSENGER);
 	      
 	      return false;
+	   }
+	   
+	   public synchronized void showDocuments() 
+	   {
+		   
 	   }
 	   
 	   public synchronized int checkDocuments ()
@@ -159,10 +167,26 @@ public class DepartureAirport {
 		   int pilotId;
 		   pilotId = ((Pilot) Thread.currentThread ()).getPilotId ();
 		   ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.READYFORBOARDING);
-		   planeReady = true;
+		   plane_at_transfer_gate = true;
 		   GenericIO.writelnString ("Plane ready to flight");
 		   notifyAll();
 		   
 	   }
+
+	public synchronized void waitForAllInBoard() {
+		
+		while (!plane_ready_to_fly)                                 // the pilot waits for the plane to be ready
+	      { try
+	        { 
+	    	  GenericIO.writelnString ("\n\033[44mPilot Waiting for all Passengers\033[0m\n");
+	    	  wait();        
+	        }
+	        catch (Exception e)
+	        { 	GenericIO.writelnString ("\n" + "UI\n");
+	        	return ;                                     // the pilot wait has come to an end
+	        }
+	      }
+		
+	}
 
 }
