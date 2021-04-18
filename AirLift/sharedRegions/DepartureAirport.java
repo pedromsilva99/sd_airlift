@@ -53,11 +53,10 @@ public class DepartureAirport {
 
 		      passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
 		      passen[passengerId] = (Passenger) Thread.currentThread ();
-		      GenericIO.writelnString ("\n" + passen[passengerId].getPassengerState());
 		      passen[passengerId].setPassengerState (PassengerStates.INQUEUE);
 		      
 		      nLine++;
-		      GenericIO.writelnString ("nLine " + nLine);
+		      GenericIO.writelnString ("Pasenger "+passengerId+" waiting in queue in " + nLine+" position");
 		      try
 		      { waitingLine.write (passengerId);                    // the customer sits down to wait for his turn
 		      }
@@ -65,29 +64,27 @@ public class DepartureAirport {
 		      { GenericIO.writelnString ("Insertion of customer id in waiting FIFO failed: " + e.getMessage ());
 		          System.exit (1);
 		      }
+		      notifyAll ();
 		      
+		      while (((Passenger) Thread.currentThread ()).getPassengerState()!= PassengerStates.INFLIGHT)
+		      { /* the customer waits for the service to be executed */
+		        try
+		        { wait ();
+		        }
+		        catch (InterruptedException e) {}
+		      }
+
 		      return true;
 		    	  
 	   }
 	   
 	   public synchronized boolean waitForNextPassenger ()  //hostess function
 	   {   
-		  int f=0; 
 	      while (nLine == 0)                                 // the barber waits for a service request
 	      { try
 	        { 
-	    	  //GenericIO.writelnString ("nLine " + nLine);
-	    	  
-//	    	  if(f==0) {
-//	    		  for(int i = 0; i<101;i++) {
-//		    		  GenericIO.writelnString ("----" + i);
-//		    	  }
-//	    	  }
-	    	  f=1;
-	    	  wait();
-	    	  
-	    	  
-	        
+	    	  GenericIO.writelnString ("Hostest passengers in line " + nLine);
+	    	  wait();        
 	        }
 	        catch (Exception e)
 	        { 	GenericIO.writelnString ("\n" + "UI\n");
@@ -102,27 +99,24 @@ public class DepartureAirport {
 	   
 	   public synchronized int checkDocuments ()
 	   {
-		  GenericIO.writelnString ("\n" + "entra");
-		  return 10;
-//	      int passengerId;                                                // passenger id
-//
-//	      passengerId = ((Passenger) Thread.currentThread ()).getpassengerId ();
-//	      ((Barber) Thread.currentThread ()).setBarberState (BarberStates.INACTIVITY);
-//
-//	      try
-//	      { customerId = sitCustomer.read ();                            // the barber calls the customer
-//	        if ((customerId < 0) || (customerId >= SimulPar.N))
-//	           throw new MemException ("illegal customer id!");
-//	      }
-//	      catch (MemException e)
-//	      { GenericIO.writelnString ("Retrieval of customer id from waiting FIFO failed: " + e.getMessage ());
-//	        customerId = -1;
-//	        System.exit (1);
-//	      }
-//
-//	      cust[customerId].setCustomerState (CustomerStates.CUTTHEHAIR);
-//
-//	      return (customerId);
+		  GenericIO.writelnString ("\n----Enter Check Documents----");
+		  int passengerId;
+		  
+		  try
+	      { passengerId = waitingLine.read ();                            // the barber calls the customer
+	        if ((passengerId < 0) || (passengerId >= SimulPar.N))
+	           throw new MemException ("illegal customer id!");
+	      }
+	      catch (MemException e)
+	      { GenericIO.writelnString ("Retrieval of customer id from waiting FIFO failed: " + e.getMessage ());
+	      passengerId = -1;
+	        System.exit (1);
+	      }
+		  GenericIO.writelnString ("Checking Doccuments of passenger "+ passengerId);
+		  passen[passengerId].setPassengerState (PassengerStates.INFLIGHT);
+		  GenericIO.writelnString ("Passenger "+ passengerId +" INFLIGHT");
+	      return (passengerId);
+
 	   }
 
 }

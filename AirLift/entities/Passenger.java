@@ -90,9 +90,12 @@ public class Passenger extends Thread{
 	     @Override
 	     public void run ()
 	     {
-	    	 GenericIO.writelnString ("\n" + "Oi2\n");
+	    	 GenericIO.writelnString ("Run Passenger "+ passengerId+"\n");
 	    	 travelToAirport();
 	    	 airport.waitInQueue();
+	    	 //airport.waitForEndOfFlight();
+	    	 //leave the plane
+	    	 
 	     }
 
 	    /**

@@ -89,15 +89,15 @@ public class Hostess extends Thread{
 	     @Override
 	     public void run ()
 	     {
-	    	 GenericIO.writelnString ("\n" + "Oi\n");
+	    	 GenericIO.writelnString ("\nHostess RUN\n");
 	    	 int passengerId;                                     // passenger id
 	         boolean endOp;
 	         while (true)
 	         { 
 	           endOp = airport.waitForNextPassenger ();           // the barber sleeps while waiting for a customer to service
 	           //NAO ENTRA :(
-	           //if (endOp) break;                                  // check for end of operations
-	           //passengerId = airport.checkDocuments ();               // the barber has waken up and calls next customer
+	           if (endOp) break;                                  // check for end of operations
+	           passengerId = airport.checkDocuments ();               // the barber has waken up and calls next customer
 	           //cutHair ();                                        // the barber cuts the customer hair
 	           //airport.receivePayment (customerId);                 // the barber finishes his service and receives payment for it
 	         }
