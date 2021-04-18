@@ -83,7 +83,7 @@ public class Hostess extends Thread{
 	     }
 
 	    /**
-	     *   Life cycle of the barber.
+	     *   Life cycle of the hostess.
 	     */
 
 	     @Override

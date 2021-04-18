@@ -84,7 +84,7 @@ public class Passenger extends Thread{
 	     }
 
 	    /**
-	     *   Life cycle of the barber.
+	     *   Life cycle of the passenger.
 	     */
 
 	     @Override

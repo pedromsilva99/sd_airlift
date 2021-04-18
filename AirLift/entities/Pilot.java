@@ -1,5 +1,6 @@
 package entities;
 
+import genclass.GenericIO;
 import sharedRegions.DepartureAirport;
 
 public class Pilot extends Thread{
@@ -82,13 +83,15 @@ public class Pilot extends Thread{
 	     }
 
 	    /**
-	     *   Life cycle of the barber.
+	     *   Life cycle of the pilot.
 	     */
 
 	     @Override
 	     public void run ()
 	     {
-	        
+	    	 GenericIO.writelnString ("\nPILOT Run \n");
+	    	 parkAtTransferGate();
+	    	 airport.informPlaneReadyForBoarding();
 	     }
 
 	    /**
@@ -96,6 +99,12 @@ public class Pilot extends Thread{
 	     *
 	     *  Internal operation?
 	     */
-	     
+	     private void parkAtTransferGate ()
+	     {
+	        try
+	        { sleep ((long) (5 + 100 * Math.random ()));
+	        }
+	        catch (InterruptedException e) {}
+	     }
 	
 }

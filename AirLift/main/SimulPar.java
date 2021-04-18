@@ -18,6 +18,12 @@ public final class SimulPar {
 	   */
 
 	   public static final int N = 2;
+	   
+	   /**
+	   *   Number of pilots.
+	   */
+
+	   public static final int P = 1;
 
 	  /**
 	   *   It can not be instantiated.

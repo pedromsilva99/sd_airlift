@@ -7,7 +7,13 @@ import genclass.GenericIO;
 
 public class DepartureAirport {
 	
-		/**
+	   /**
+	   *  Control variable for the plane
+	   */
+	
+	   boolean planeReady = false;
+	
+	   /**
 	   *  Number of people in line.
 	   */
 
@@ -80,7 +86,7 @@ public class DepartureAirport {
 	   
 	   public synchronized boolean waitForNextPassenger ()  //hostess function
 	   {   
-	      while (nLine == 0)                                 // the barber waits for a service request
+	      while (nLine == 0)                                 // the hostess waits for a passenger to get in the queue
 	      { try
 	        { 
 	    	  GenericIO.writelnString ("Hostest passengers in line " + nLine);
@@ -88,11 +94,28 @@ public class DepartureAirport {
 	        }
 	        catch (Exception e)
 	        { 	GenericIO.writelnString ("\n" + "UI\n");
-	        	return true;                                     // the barber life cycle has come to an end
+	        	return true;                                     // the hostess wait has come to an end
 	        }
 	      }
 
-	      if (nLine > 0) nLine -= 1;                       // the barber takes notice some one has requested his service
+	      if (nLine > 0) nLine -= 1;                       // the hostess takes notice some one is in Line
+
+	      return false;
+	   }
+	   
+	   public synchronized boolean prepareForPassBoarding ()  //hostess function
+	   {   
+	      while (!planeReady)                                 // the hostess waits for the plane to be ready
+	      { try
+	        { 
+	    	  GenericIO.writelnString ("\nHostess Waiting for Plane\n");
+	    	  wait();        
+	        }
+	        catch (Exception e)
+	        { 	GenericIO.writelnString ("\n" + "UI\n");
+	        	return true;                                     // the hostess wait has come to an end
+	        }
+	      }
 
 	      return false;
 	   }
@@ -117,6 +140,17 @@ public class DepartureAirport {
 		  GenericIO.writelnString ("Passenger "+ passengerId +" INFLIGHT");
 	      return (passengerId);
 
+	   }
+	   
+	   public synchronized void informPlaneReadyForBoarding () {
+		   
+		   int pilotId;
+		   pilotId = ((Pilot) Thread.currentThread ()).getPilotId ();
+		   ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.READYFORBOARDING);
+		   planeReady = true;
+		   GenericIO.writelnString ("Plane ready to flight");
+		   notifyAll();
+		   
 	   }
 
 }
