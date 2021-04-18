@@ -96,12 +96,32 @@ public class Hostess extends Thread{
 	         { 
 	           endOp = airport.prepareForPassBoarding();
 	           if (endOp) break;
-	           endOp = airport.waitForNextPassenger ();           // the barber sleeps while waiting for a customer to service
-	           //NAO ENTRA :(
-	           if (endOp) break;                                  // check for end of operations
-	           passengerId = airport.checkDocuments ();               // the barber has waken up and calls next customer
-	           //cutHair ();                                        // the barber cuts the customer hair
-	           //airport.receivePayment (customerId);                 // the barber finishes his service and receives payment for it
+	           
+	           //---------------------------------------------------------------------------------------
+	           while (hostessState != HostessStates.READYTOFLY)
+	           {   
+	        	   int waitPassenger = airport.waitForNextPassenger();
+		           if ( waitPassenger == HostessStates.CHECKPASSENGER)                                   
+		        	   passengerId = airport.checkDocuments ();
+		           else if (waitPassenger == HostessStates.READYTOFLY) {
+		        	   hostessState=HostessStates.READYTOFLY;
+		        	   GenericIO.writelnString ("Hostess Ready To FLY \n");
+		        	   System.exit(0);
+		           }
+		           else {
+					//error
+				}
+	           
+		           
+	           }
+	           //GenericIO.writelnString ("Hostess Ready To FLY \n");
+	           //----------------------------------------------------------------------------------------
+	           //informPlaneReadyToTakeOff
+	           
+	           //waitForNextFlight
+	           
+	           //notifyAll();
+
 	         }
 	     }
 

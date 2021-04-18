@@ -20,9 +20,14 @@ public class DepartureAirport {
 	   private int nLine = 0;
 	   
 	   /**
+	   *  Reference to passengers on board.
+	   */
+	   
+	   private int passengersOnBoard = 0;
+	   /**
 	   *  Reference to customer threads.
 	   */
-
+	   
 	   private final Passenger [] passen;
 
 	  /**
@@ -40,11 +45,11 @@ public class DepartureAirport {
 	   public DepartureAirport ()//GeneralRepos repos)
 	   {
 		  nLine = 0;
-		  passen = new Passenger [SimulPar.N];
-	      for (int i = 0; i < SimulPar.N; i++)
+		  passen = new Passenger [SimulPar.nPassengers];
+	      for (int i = 0; i < SimulPar.nPassengers; i++)
 	    	  passen[i] = null;
 	      try
-	      { waitingLine = new MemFIFO<> (new Integer [SimulPar.K]);
+	      { waitingLine = new MemFIFO<> (new Integer [SimulPar.nPassengers]);
 	      }
 	      catch (MemException e)
 	      { GenericIO.writelnString ("Instantiation of waiting FIFO failed: " + e.getMessage ());
@@ -62,7 +67,8 @@ public class DepartureAirport {
 		      passen[passengerId].setPassengerState (PassengerStates.INQUEUE);
 		      
 		      nLine++;
-		      GenericIO.writelnString ("Pasenger "+passengerId+" waiting in queue in " + nLine+" position");
+		      System.out.println ("\033[0;91m"+"Pasenger "+passengerId+" waiting in queue in " + nLine+" position"+"\u001B[0m");
+
 		      try
 		      { waitingLine.write (passengerId);                    // the customer sits down to wait for his turn
 		      }
@@ -79,28 +85,31 @@ public class DepartureAirport {
 		        }
 		        catch (InterruptedException e) {}
 		      }
-
+		      GenericIO.writelnString ("\033[44mPassenger "+ passengerId +" INFLIGHT\033[0m");	
 		      return true;
 		    	  
 	   }
 	   
-	   public synchronized boolean waitForNextPassenger ()  //hostess function
+	   public synchronized int waitForNextPassenger ()  //hostess function
 	   {   
 	      while (nLine == 0)                                 // the hostess waits for a passenger to get in the queue
 	      { try
 	        { 
-	    	  GenericIO.writelnString ("Hostest passengers in line " + nLine);
+	    	  GenericIO.writelnString ("\033[41mPassengers in line " + nLine+"\033[0m");
+	    	  if (passengersOnBoard >= SimulPar.minInPlane)
+	    		return HostessStates.READYTOFLY;
+			
 	    	  wait();        
 	        }
 	        catch (Exception e)
 	        { 	GenericIO.writelnString ("\n" + "UI\n");
-	        	return true;                                     // the hostess wait has come to an end
+	        	return -1;                                     // the hostess wait has come to an end
 	        }
 	      }
 
 	      if (nLine > 0) nLine -= 1;                       // the hostess takes notice some one is in Line
 
-	      return false;
+	      return HostessStates.CHECKPASSENGER;
 	   }
 	   
 	   public synchronized boolean prepareForPassBoarding ()  //hostess function
@@ -108,7 +117,7 @@ public class DepartureAirport {
 	      while (!planeReady)                                 // the hostess waits for the plane to be ready
 	      { try
 	        { 
-	    	  GenericIO.writelnString ("\nHostess Waiting for Plane\n");
+	    	  GenericIO.writelnString ("\n\033[0;34mHostess Waiting for Plane\033[0m\n");
 	    	  wait();        
 	        }
 	        catch (Exception e)
@@ -124,12 +133,12 @@ public class DepartureAirport {
 	   
 	   public synchronized int checkDocuments ()
 	   {
-		  GenericIO.writelnString ("\n----Enter Check Documents----");
+		  GenericIO.writelnString ("\n\033[42m----Enter Check Documents----\033[0m");
 		  int passengerId;
 		  
 		  try
 	      { passengerId = waitingLine.read ();                            // the barber calls the customer
-	        if ((passengerId < 0) || (passengerId >= SimulPar.N))
+	        if ((passengerId < 0) || (passengerId >= SimulPar.nPassengers))
 	           throw new MemException ("illegal customer id!");
 	      }
 	      catch (MemException e)
@@ -139,7 +148,8 @@ public class DepartureAirport {
 	      }
 		  GenericIO.writelnString ("Checking Doccuments of passenger "+ passengerId);
 		  passen[passengerId].setPassengerState (PassengerStates.INFLIGHT);
-		  GenericIO.writelnString ("Passenger "+ passengerId +" INFLIGHT");
+		  notifyAll();
+		  passengersOnBoard++;
 	      return (passengerId);
 
 	   }

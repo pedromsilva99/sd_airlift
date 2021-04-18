@@ -30,7 +30,7 @@ public class Pilot extends Thread{
 	    *     @param airport reference to the departure airport
 	    */
 
-	    public Pilot  (String name, int hostessId, DepartureAirport airport)
+	    public Pilot  (String name, int pilotId, DepartureAirport airport)
 	    {
 	       super (name);
 	       this.pilotId = pilotId;
