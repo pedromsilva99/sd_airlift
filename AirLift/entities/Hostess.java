@@ -34,7 +34,7 @@ public class Hostess extends Thread{
 	    {
 	       super (name);
 	       this.hostessId = hostessId;
-	       hostessState = HostessStates.WAITFORPASSENGER;
+	       hostessState = HostessStates.WAITFORFLIGHT;
 	       this.airport = airport;
 	    }
 	    
@@ -94,6 +94,8 @@ public class Hostess extends Thread{
 	         boolean endOp;
 	         while (true)
 	         { 
+	           endOp = airport.prepareForPassBoarding();
+	           if (endOp) break;
 	           endOp = airport.waitForNextPassenger ();           // the barber sleeps while waiting for a customer to service
 	           //NAO ENTRA :(
 	           if (endOp) break;                                  // check for end of operations
