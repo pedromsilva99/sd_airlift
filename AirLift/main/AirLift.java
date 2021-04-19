@@ -21,6 +21,7 @@ public class AirLift {
 	    Passenger [] passenger = new Passenger [SimulPar.nPassengers];    // array of passenger threads
 	    DepartureAirport airport;                               // reference to the departure airport
 	    Plane plane;											// reference to the plane
+	    DestinationAirport destAirport;							// reference to the destination airport
 	    GeneralRepos repos;                                     // reference to the general repository
         int nIter;                                              // number of iterations of the customer life cycle
         String fileName;                                        // logging file name
@@ -32,12 +33,13 @@ public class AirLift {
         
         airport = new DepartureAirport ();//repos);
         plane = new Plane ();
+        destAirport = new DestinationAirport();
         for (int i = 0; i < SimulPar.nPilots; i++)
-        	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport, plane);
+        	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport, plane, destAirport);
         for (int i = 0; i < SimulPar.nHostess; i++)
         	hostess[i] = new Hostess ("Hostess_" + (i+1), i, airport);
         for (int i = 0; i < SimulPar.nPassengers; i++)
-        	passenger[i] = new Passenger ("Passenger_" + (i+1), i, airport, plane);
+        	passenger[i] = new Passenger ("Passenger_" + (i+1), i, airport, plane, destAirport);
         
         for (int i = 0; i < SimulPar.nPilots; i++)
         	pilot[i].start ();

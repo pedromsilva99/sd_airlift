@@ -30,6 +30,12 @@ public class Passenger extends Thread{
 	   private final Plane plane;
 	   
 	   /**
+	   *  Reference to the destination airport.
+	   */
+
+	   private final DestinationAirport destAirport;
+		   
+	   /**
 	   *   Instantiation of a Passenger thread.
 	   *
 	   *     @param name thread name
@@ -37,13 +43,14 @@ public class Passenger extends Thread{
 	   *     @param airport reference to the departure airport
 	   */
 
-	    public Passenger  (String name, int passengerId, DepartureAirport airport, Plane plane)
+	    public Passenger  (String name, int passengerId, DepartureAirport airport, Plane plane, DestinationAirport destAirport)
 	    {
 	       super (name);
 	       this.passengerId = passengerId;
 	       passengerState = PassengerStates.GOINGTOAIRPORT;
 	       this.airport = airport;
 	       this.plane = plane;
+	       this.destAirport = destAirport;
 	    }
 	    
 	    /**
@@ -102,7 +109,7 @@ public class Passenger extends Thread{
 	    	 airport.waitInQueue();
 	    	 airport.showDocuments();
 	    	 plane.boardThePlane();
-	    	 
+	    	 destAirport.leaveThePlane();
 	    	 
 	    	 //airport.waitForEndOfFlight();
 	    	 //leave the plane

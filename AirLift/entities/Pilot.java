@@ -29,6 +29,12 @@ public class Pilot extends Thread{
 	   private final Plane plane;
 	   
 	   /**
+	   *  Reference to the destination airport.
+	   */
+
+	   private final DestinationAirport destAirport;
+	   
+	   /**
 	    *   Instantiation of a Pilot thread.
 	    *
 	    *     @param name thread name
@@ -36,12 +42,13 @@ public class Pilot extends Thread{
 	    *     @param airport reference to the departure airport
 	    */
 
-	    public Pilot  (String name, int pilotId, DepartureAirport airport, Plane plane)
+	    public Pilot  (String name, int pilotId, DepartureAirport airport, Plane plane, DestinationAirport destAirport)
 	    {
 	       super (name);
 	       this.pilotId = pilotId;
 	       this.airport = airport;
 	       this.plane = plane;
+	       this.destAirport = destAirport;
 	    }
 	    
 	    /**
@@ -100,17 +107,7 @@ public class Pilot extends Thread{
 	    	 airport.informPlaneReadyForBoarding();
 	    	 airport.waitForAllInBoard();
 	    	 plane.flyToDestinationPoint();
-	    	 GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m");
-	    	 GenericIO.writelnString ("\u001B[45mENTRA \u001B[0m");
-	     }
-
-	     private void flyToDestinationPoint ()
-	     {
-	    	 
-//	        try
-//	        { sleep ((long) (3 + 100 * Math.random ()));
-//	        }
-//	        catch (InterruptedException e) {}
+	    	 destAirport.anounceArrival();
 	     }
 	
 }
