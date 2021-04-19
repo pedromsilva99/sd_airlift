@@ -96,25 +96,14 @@ public class Pilot extends Thread{
 	     public void run ()
 	     {
 	    	 GenericIO.writelnString ("\nPILOT Run \n");
-	    	 parkAtTransferGate();
-	    	 pilotState = PilotStates.ATTRANSFERGATE;
+	    	 airport.parkAtTransferGate();
 	    	 airport.informPlaneReadyForBoarding();
-	    	 pilotState = PilotStates.READYFORBOARDING;
 	    	 airport.waitForAllInBoard();
-	    	 pilotState = PilotStates.WAITINGFORBOARDING;
+
+		     //GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m"); 
+	    	 plane.flyToDestinationPoint();
 	     }
 
-	    /**
-	     *  
-	     *
-	     *  Internal operation?
-	     */
-	     private void parkAtTransferGate ()
-	     {
-	        try
-	        { sleep ((long) (5 + 100 * Math.random ()));
-	        }
-	        catch (InterruptedException e) {}
-	     }
+	    
 	
 }

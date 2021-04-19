@@ -5,7 +5,7 @@ import entities.*;
 import commInfra.*;
 import genclass.GenericIO;
 
-public class DepartureAirport {
+public class DepartureAirport extends Thread{
 	
 	   /**
 	   *  Control variable for the plane
@@ -214,6 +214,18 @@ public class DepartureAirport {
 	        }
 	      }
 		
+		((Pilot) Thread.currentThread ()).setPilotState (PilotStates.WAITINGFORBOARDING);
+		GenericIO.writelnString ("Everybody on board");
 	}
+	
+	public synchronized void parkAtTransferGate ()
+    {
+       try
+       { sleep ((long) (5 + 100 * Math.random ()));
+       }
+       catch (InterruptedException e) {}
+       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.ATTRANSFERGATE);
+       GenericIO.writelnString ("PLANE AT TRANSFER GATE");
+    }
 
 }

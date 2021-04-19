@@ -5,7 +5,7 @@ import entities.*;
 import commInfra.*;
 import genclass.GenericIO;
 
-public class Plane {
+public class Plane extends Thread{
 	
 		/**
 	    *  Number of pasengers in the plane.
@@ -55,4 +55,17 @@ public class Plane {
 		      GenericIO.writelnString ("\u001B[45mPASSENGER IN FLIGHT " + passengerId + "\u001B[0m");
 		      
 		   }
+		
+		public synchronized void flyToDestinationPoint ()  //hostess function
+		   {   
+			try
+	        { sleep ((long) (1 + 1 * Math.random ()));
+	        
+	        }
+	        catch (InterruptedException e) {}
+			GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m"); 
+		   }
+		
+		
+		
 }

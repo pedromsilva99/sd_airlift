@@ -104,8 +104,8 @@ public class Hostess extends Thread{
 		           if ( waitPassengerId >=0)                                   
 		        	   passengerId = airport.checkDocuments(waitPassengerId);
 		           else if (waitPassengerId == -1) {
+		        	   
 		        	   hostessState=HostessStates.READYTOFLY;
-		        	   GenericIO.writelnString ("Hostess Ready To FLY \n");
 		        	   System.exit(0);
 		           }
 		           else {
