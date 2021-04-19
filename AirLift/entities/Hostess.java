@@ -92,7 +92,8 @@ public class Hostess extends Thread{
 	    	 GenericIO.writelnString ("\nHostess RUN\n");
 	    	 int passengerId;                                     // passenger id
 	         boolean endOp;
-	         while (true)
+	         int i=0;
+	         while (i==0)
 	         { 
 	           endOp = airport.prepareForPassBoarding();
 	           if (endOp) break;
@@ -106,13 +107,14 @@ public class Hostess extends Thread{
 		           else if (waitPassengerId == -1) {
 		        	   
 		        	   hostessState=HostessStates.READYTOFLY;
-		        	   System.exit(0);
+		        	   //System.exit(0);
 		           }
 		           else {
 		        	   GenericIO.writelnString ("ERROR");
-		        	   System.exit(0);
+		        	   //System.exit(0);
+		           
 				}
-	           
+		           i=1;
 		           
 	           }
 	           //GenericIO.writelnString ("Hostess Ready To FLY \n");

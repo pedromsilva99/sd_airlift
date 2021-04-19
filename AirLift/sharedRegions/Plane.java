@@ -56,14 +56,15 @@ public class Plane extends Thread{
 		      
 		   }
 		
+		
+		
 		public synchronized void flyToDestinationPoint ()  //hostess function
-		   {   
-			try
-	        { sleep ((long) (1 + 1 * Math.random ()));
-	        
+		   {
+	        try
+	        { 
+	        sleep ((long) (3 + 100 * Math.random ()));
 	        }
 	        catch (InterruptedException e) {}
-			GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m"); 
 		   }
 		
 		

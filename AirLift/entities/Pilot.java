@@ -99,11 +99,18 @@ public class Pilot extends Thread{
 	    	 airport.parkAtTransferGate();
 	    	 airport.informPlaneReadyForBoarding();
 	    	 airport.waitForAllInBoard();
-
-		     //GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m"); 
 	    	 plane.flyToDestinationPoint();
+	    	 GenericIO.writelnString ("\u001B[45mFLIGHT CONCLUDED \u001B[0m");
+	    	 GenericIO.writelnString ("\u001B[45mENTRA \u001B[0m");
 	     }
 
-	    
+	     private void flyToDestinationPoint ()
+	     {
+	    	 
+//	        try
+//	        { sleep ((long) (3 + 100 * Math.random ()));
+//	        }
+//	        catch (InterruptedException e) {}
+	     }
 	
 }
