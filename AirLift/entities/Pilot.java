@@ -1,7 +1,7 @@
 package entities;
 
 import genclass.GenericIO;
-import sharedRegions.DepartureAirport;
+import sharedRegions.*;
 
 public class Pilot extends Thread{
 	/**
@@ -23,6 +23,12 @@ public class Pilot extends Thread{
 	   private final DepartureAirport airport;
 	   
 	   /**
+	   *  Reference to the plane.
+	   */
+
+	   private final Plane plane;
+	   
+	   /**
 	    *   Instantiation of a Pilot thread.
 	    *
 	    *     @param name thread name
@@ -30,11 +36,12 @@ public class Pilot extends Thread{
 	    *     @param airport reference to the departure airport
 	    */
 
-	    public Pilot  (String name, int pilotId, DepartureAirport airport)
+	    public Pilot  (String name, int pilotId, DepartureAirport airport, Plane plane)
 	    {
 	       super (name);
 	       this.pilotId = pilotId;
 	       this.airport = airport;
+	       this.plane = plane;
 	    }
 	    
 	    /**

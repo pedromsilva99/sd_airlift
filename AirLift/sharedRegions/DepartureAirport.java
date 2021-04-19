@@ -26,12 +26,12 @@ public class DepartureAirport {
 	   
 	   private int passengersOnBoard = 0;
 	   /**
-	   *  Reference to customer threads.
+	   *  Reference to passenger threads.
 	   */
 	   
 	   private final Passenger [] passen;
 
-	  /**
+	   /**
 	   *   Waiting seats occupation.
 	   */
 

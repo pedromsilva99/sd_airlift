@@ -20,6 +20,7 @@ public class AirLift {
 		Hostess [] hostess = new Hostess [SimulPar.nHostess];          // array of hostess threads
 	    Passenger [] passenger = new Passenger [SimulPar.nPassengers];    // array of passenger threads
 	    DepartureAirport airport;                               // reference to the departure airport
+	    Plane plane;											// reference to the plane
 	    GeneralRepos repos;                                     // reference to the general repository
         int nIter;                                              // number of iterations of the customer life cycle
         String fileName;                                        // logging file name
@@ -30,12 +31,13 @@ public class AirLift {
         GenericIO.writeString ("Number of iterations of the customer life cycle? ");
         
         airport = new DepartureAirport ();//repos);
+        plane = new Plane ();
         for (int i = 0; i < SimulPar.nPilots; i++)
-        	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport);
+        	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport, plane);
         for (int i = 0; i < SimulPar.nHostess; i++)
         	hostess[i] = new Hostess ("Hostess_" + (i+1), i, airport);
         for (int i = 0; i < SimulPar.nPassengers; i++)
-        	passenger[i] = new Passenger ("Passenger_" + (i+1), i, airport);
+        	passenger[i] = new Passenger ("Passenger_" + (i+1), i, airport, plane);
         
         for (int i = 0; i < SimulPar.nPilots; i++)
         	pilot[i].start ();
