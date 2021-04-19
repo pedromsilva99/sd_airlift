@@ -101,6 +101,7 @@ public class Passenger extends Thread{
 	    	 travelToAirport();
 	    	 airport.waitInQueue();
 	    	 airport.showDocuments();
+	    	 plane.boardThePlane();
 	    	 
 	    	 
 	    	 //airport.waitForEndOfFlight();

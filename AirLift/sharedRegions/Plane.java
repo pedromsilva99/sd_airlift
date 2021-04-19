@@ -52,7 +52,7 @@ public class Plane {
 		   {   
 		      int passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
 		      ((Passenger) Thread.currentThread ()).setPassengerState (PassengerStates.INFLIGHT);
-		      GenericIO.writelnString ("PASSENGER IN FLIGHT " + passengerId);
+		      GenericIO.writelnString ("\u001B[45mPASSENGER IN FLIGHT " + passengerId + "\u001B[0m");
 		      
 		   }
 }

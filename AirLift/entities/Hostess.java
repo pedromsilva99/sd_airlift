@@ -100,16 +100,17 @@ public class Hostess extends Thread{
 	           //---------------------------------------------------------------------------------------
 	           while (hostessState != HostessStates.READYTOFLY)
 	           {   
-	        	   int waitPassenger = airport.waitForNextPassenger();
-		           if ( waitPassenger == HostessStates.CHECKPASSENGER)                                   
-		        	   passengerId = airport.checkDocuments ();
-		           else if (waitPassenger == HostessStates.READYTOFLY) {
+	        	   int waitPassengerId = airport.waitForNextPassenger();
+		           if ( waitPassengerId >=0)                                   
+		        	   passengerId = airport.checkDocuments(waitPassengerId);
+		           else if (waitPassengerId == -1) {
 		        	   hostessState=HostessStates.READYTOFLY;
 		        	   GenericIO.writelnString ("Hostess Ready To FLY \n");
 		        	   System.exit(0);
 		           }
 		           else {
-					//error
+		        	   GenericIO.writelnString ("ERROR");
+		        	   System.exit(0);
 				}
 	           
 		           

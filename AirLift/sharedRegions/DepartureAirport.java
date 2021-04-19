@@ -38,9 +38,15 @@ public class DepartureAirport {
 	   private MemFIFO<Integer> waitingLine;
 
 	  /**
+	   *   Reference to call the passenger with ID
+	   */
+	   private int calledPassengerId =-1;
+	   
+	   /**
 	   *   Reference to the general repository.
 	   */
-
+	   private int calledPassengerDocuments =-1;
+	   
 	   //private final GeneralRepos repos;
 	   
 	   public DepartureAirport ()//GeneralRepos repos)
@@ -60,11 +66,12 @@ public class DepartureAirport {
 	      //this.repos = repos;
 	   }
 	   
-	   public synchronized boolean waitInQueue () {
+	   public synchronized void waitInQueue () {
+		  
 		      int passengerId;                                      // passenger id
-
-		      passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
-		      passen[passengerId] = (Passenger) Thread.currentThread ();
+	      	  Passenger passenger = ((Passenger) Thread.currentThread ()); 	
+		      passengerId = passenger.getPassengerId ();
+		      passen[passengerId] = passenger;
 		      passen[passengerId].setPassengerState (PassengerStates.INQUEUE);
 		      
 		      nLine++;
@@ -79,40 +86,70 @@ public class DepartureAirport {
 		      }
 		      notifyAll ();
 		      
-		      while (((Passenger) Thread.currentThread ()).getPassengerState()!= PassengerStates.INFLIGHT)
+		      while(passengerId!=calledPassengerId) {
+		    	  try{ 
+		        	wait ();
+		    	  }
+		    	  catch (InterruptedException e) {}
+		      }
+
+	   }
+	   public synchronized boolean showDocuments () {
+			  
+		      int passengerId;                                      // passenger id
+	      	  Passenger passenger = ((Passenger) Thread.currentThread ()); 	
+		      passengerId = passenger.getPassengerId ();
+		      passen[passengerId] = passenger;
+		      passen[passengerId].setPassengerState (PassengerStates.INQUEUE);
+		      
+		      calledPassengerDocuments = passengerId;
+		      GenericIO.writelnString ("\033[42m-Passenger "+ passengerId +" giving his doccuments\033[0m");
+		      notifyAll();
+		      while (passenger.getPassengerState()!= PassengerStates.INFLIGHT)
 		      { /* the customer waits for the service to be executed */
-		        try
-		        { wait ();
+		        try{ 
+		        	wait ();
 		        }
 		        catch (InterruptedException e) {}
 		      }
-		      GenericIO.writelnString ("\033[44mPassenger "+ passengerId +" INFLIGHT\033[0m");	
 		      return true;
-		    	  
 	   }
 	   
-	   public synchronized int waitForNextPassenger ()  //hostess function
-	   {   
-	      while (nLine == 0)                                 // the hostess waits for a passenger to get in the queue
-	      { try
-	        { 
+	   
+	   public synchronized int waitForNextPassenger () {  //hostess function
+	      
+	      while (nLine == 0){                                 // the hostess waits for a passenger to get in the queue
+	       try{ 
 	    	  GenericIO.writelnString ("\033[41mPassengers in line " + nLine+"\033[0m");
 	    	  if (passengersOnBoard >= SimulPar.minInPlane) {
 	    		  plane_ready_to_fly = true;  
-	    		  return HostessStates.READYTOFLY;
+	    		  return -1;
 	    		}
-			
 	    	  wait();        
 	        }
-	        catch (Exception e)
-	        { 	GenericIO.writelnString ("\n" + "UI\n");
+	        catch (Exception e){
+	        	GenericIO.writelnString ("\n" + "UI\n");
 	        	return -1;                                     // the hostess wait has come to an end
 	        }
 	      }
 
 	      if (nLine > 0) nLine -= 1;                       // the hostess takes notice some one is in Line
-
-	      return HostessStates.CHECKPASSENGER;
+	      
+	      int passengerId;
+		  try
+	      { passengerId = waitingLine.read ();                            // the barber calls the customer
+	        if ((passengerId < 0) || (passengerId >= SimulPar.nPassengers))
+	           throw new MemException ("illegal customer id!");
+	      }
+	      catch (MemException e)
+	      { GenericIO.writelnString ("Retrieval of customer id from waiting FIFO failed: " + e.getMessage ());
+	      	passengerId = -1;
+	        System.exit (1);
+	      }
+		  calledPassengerId=passengerId;
+		  notifyAll();
+		  
+	      return passengerId;
 	   }
 	   
 	   public synchronized boolean prepareForPassBoarding ()  //hostess function
@@ -134,38 +171,28 @@ public class DepartureAirport {
 	      return false;
 	   }
 	   
-	   public synchronized void showDocuments() 
-	   {
-		   
-	   }
 	   
-	   public synchronized int checkDocuments ()
+	   public synchronized int checkDocuments (int waitPassengerId)
 	   {
 		  GenericIO.writelnString ("\n\033[42m----Enter Check Documents----\033[0m");
-		  int passengerId;
 		  
-		  try
-	      { passengerId = waitingLine.read ();                            // the barber calls the customer
-	        if ((passengerId < 0) || (passengerId >= SimulPar.nPassengers))
-	           throw new MemException ("illegal customer id!");
+		  while(waitPassengerId!=calledPassengerDocuments) {
+	    	  try{ 
+	        	wait ();
+	    	  }
+	    	  catch (InterruptedException e) {}
 	      }
-	      catch (MemException e)
-	      { GenericIO.writelnString ("Retrieval of customer id from waiting FIFO failed: " + e.getMessage ());
-	      passengerId = -1;
-	        System.exit (1);
-	      }
-		  GenericIO.writelnString ("Checking Doccuments of passenger "+ passengerId);
-		  passen[passengerId].setPassengerState (PassengerStates.INFLIGHT);
+		  
+		  GenericIO.writelnString ("Checking Doccuments of passenger "+ waitPassengerId);
+		  passen[waitPassengerId].setPassengerState (PassengerStates.INFLIGHT);
 		  notifyAll();
 		  passengersOnBoard++;
-	      return (passengerId);
+	      return (waitPassengerId);
 
 	   }
 	   
 	   public synchronized void informPlaneReadyForBoarding () {
 		   
-		   int pilotId;
-		   pilotId = ((Pilot) Thread.currentThread ()).getPilotId ();
 		   ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.READYFORBOARDING);
 		   plane_at_transfer_gate = true;
 		   GenericIO.writelnString ("Plane ready to flight");
