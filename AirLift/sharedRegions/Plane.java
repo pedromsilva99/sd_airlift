@@ -47,4 +47,12 @@ public class Plane {
 		      }
 		      //this.repos = repos;
 		   }
+		
+		public synchronized void boardThePlane ()  //hostess function
+		   {   
+		      int passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
+		      ((Passenger) Thread.currentThread ()).setPassengerState (PassengerStates.INFLIGHT);
+		      GenericIO.writelnString ("PASSENGER IN FLIGHT " + passengerId);
+		      
+		   }
 }
