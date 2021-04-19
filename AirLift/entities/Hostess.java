@@ -89,43 +89,39 @@ public class Hostess extends Thread{
 	     @Override
 	     public void run ()
 	     {
+	    	 int interaction = 0;
 	    	 GenericIO.writelnString ("\nHostess RUN\n");
-	    	 int passengerId;                                     // passenger id
-	         boolean endOp;
-	         int i=0;
-	         while (i==0)
-	         { 
-	           endOp = airport.prepareForPassBoarding();
-	           if (endOp) break;
-	           
-	           //---------------------------------------------------------------------------------------
-	           while (hostessState != HostessStates.READYTOFLY)
-	           {   
-	        	   int waitPassengerId = airport.waitForNextPassenger();
-		           if ( waitPassengerId >=0)                                   
-		        	   passengerId = airport.checkDocuments(waitPassengerId);
-		           else if (waitPassengerId == -1) {
-		        	   
-		        	   hostessState=HostessStates.READYTOFLY;
-		        	   //System.exit(0);
-		           }
-		           else {
-		        	   GenericIO.writelnString ("ERROR");
-		        	   //System.exit(0);
-		           
-				}
-		           i=1;
-		           
-	           }
-	           //GenericIO.writelnString ("Hostess Ready To FLY \n");
-	           //----------------------------------------------------------------------------------------
-	           //informPlaneReadyToTakeOff
-	           
-	           //waitForNextFlight
-	           
-	           //notifyAll();
-
-	         }
+	    	 while(interaction == 0) {
+	    		 int passengerId;                                     // passenger id
+		         boolean endOp;
+		         int i=0;
+		         while (i==0)
+		         { 
+			           endOp = airport.prepareForPassBoarding();
+			           if (endOp) break;
+			           
+			           //---------------------------------------------------------------------------------------
+			           while (hostessState != HostessStates.READYTOFLY)
+			           {   
+			        	   int waitPassengerId = airport.waitForNextPassenger();
+				           if ( waitPassengerId >=0)                                   
+				        	   passengerId = airport.checkDocuments(waitPassengerId);
+				           else if (waitPassengerId == -1) {
+				        	   
+				        	   hostessState=HostessStates.READYTOFLY;
+				        	   //System.exit(0);
+				           }
+				           else {
+				        	   GenericIO.writelnString ("ERROR");
+				        	   //System.exit(0);
+				           }
+				           i=1;
+			           }
+		         }
+		         //interaction = airport.checkPassengers();
+		         interaction = 1;
+	    	 }
+	    	 
 	     }
 
 	    /**

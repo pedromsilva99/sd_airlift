@@ -102,12 +102,20 @@ public class Pilot extends Thread{
 	     @Override
 	     public void run ()
 	     {
+	    	 int interaction = 0;
 	    	 GenericIO.writelnString ("\nPILOT Run \n");
-	    	 airport.parkAtTransferGate();
-	    	 airport.informPlaneReadyForBoarding();
-	    	 airport.waitForAllInBoard();
-	    	 plane.flyToDestinationPoint();
-	    	 destAirport.anounceArrival();
+	    	 while(interaction == 0) {
+	    		 
+		    	 airport.parkAtTransferGate();
+		    	 airport.informPlaneReadyForBoarding();
+		    	 airport.waitForAllInBoard();
+		    	 plane.flyToDestinationPoint();
+		    	 destAirport.anounceArrival();
+		    	 plane.flyToDeparturePoint();
+		    	 //interaction = airport.checkPassengers();
+		    	 interaction = 1;
+	    	 }
+	    	 
 	     }
 	
 }

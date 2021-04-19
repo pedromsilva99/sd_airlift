@@ -77,6 +77,17 @@ public class Plane extends Thread{
 	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
 		   }
 		
+		public synchronized void flyToDeparturePoint ()  //hostess function
+		   {
+	        try
+	        { 
+	        sleep ((long) (3 + 100 * Math.random ()));
+	        }
+	        catch (InterruptedException e) {}
+	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGBACK);
+	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DEPARTURE AIRPORT \u001B[0m");
+		   }
+		
 		
 		
 		

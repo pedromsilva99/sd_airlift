@@ -21,6 +21,12 @@ public class DepartureAirport extends Thread{
 	   private int nLine = 0;
 	   
 	   /**
+	   *  Number of people left to fly to destination
+	   */
+
+	   private int nLeft = SimulPar.nPassengers;
+	   
+	   /**
 	   *  Reference to passengers on board.
 	   */
 	   
@@ -128,7 +134,6 @@ public class DepartureAirport extends Thread{
 	    	  wait();        
 	        }
 	        catch (Exception e){
-	        	GenericIO.writelnString ("\n" + "UI\n");
 	        	return -1;                                     // the hostess wait has come to an end
 	        }
 	      }
@@ -161,7 +166,7 @@ public class DepartureAirport extends Thread{
 	    	  wait();        
 	        }
 	        catch (Exception e)
-	        { 	GenericIO.writelnString ("\n" + "UI\n");
+	        { 	
 	        	return true;                                     // the hostess wait has come to an end
 	        }
 	      }
@@ -175,7 +180,7 @@ public class DepartureAirport extends Thread{
 	   public synchronized int checkDocuments (int waitPassengerId)
 	   {
 		  GenericIO.writelnString ("\n\033[42m----Enter Check Documents----\033[0m");
-		  
+		  nLeft--;
 		  while(waitPassengerId!=calledPassengerDocuments) {
 	    	  try{ 
 	        	wait ();
@@ -209,13 +214,14 @@ public class DepartureAirport extends Thread{
 	    	  wait();        
 	        }
 	        catch (Exception e)
-	        { 	GenericIO.writelnString ("\n" + "UI\n");
+	        { 	
 	        	return ;                                     // the pilot wait has come to an end
 	        }
 	      }
 		
 		((Pilot) Thread.currentThread ()).setPilotState (PilotStates.WAITINGFORBOARDING);
 		GenericIO.writelnString ("Everybody on board");
+		GenericIO.writelnString ("Passengers left: " + nLeft);
 	}
 	
 	public synchronized void parkAtTransferGate ()
@@ -226,6 +232,26 @@ public class DepartureAirport extends Thread{
        catch (InterruptedException e) {}
        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.ATTRANSFERGATE);
        GenericIO.writelnString ("PLANE AT TRANSFER GATE");
+       plane_ready_to_fly = false;
     }
+	
+	
+	public int checkPassengers() {
+		return nLeft;
+	}
+	
+	public synchronized void waitForNextFlight () {  //hostess function
+	      
+	      while (!plane_ready_to_fly){                                 // the hostess waits for a passenger to get in the queue
+	       try{ 
+	    	   //Incompleto
+	    	  
+	    	  wait();        
+	        }
+	        catch (Exception e){
+	        	return;                                  // the hostess wait has come to an end
+	        }
+	      }
+	   }
 
 }
