@@ -34,6 +34,9 @@ public class Pilot extends Thread{
 
 	   private final DestinationAirport destAirport;
 	   
+	   
+	   private Boolean endOfDay;
+	   
 	   /**
 	    *   Instantiation of a Pilot thread.
 	    *
@@ -41,7 +44,6 @@ public class Pilot extends Thread{
 	    *     @param barberId Pilot id
 	    *     @param airport reference to the departure airport
 	    */
-
 	    public Pilot  (String name, int pilotId, DepartureAirport airport, Plane plane, DestinationAirport destAirport)
 	    {
 	       super (name);
@@ -49,6 +51,7 @@ public class Pilot extends Thread{
 	       this.airport = airport;
 	       this.plane = plane;
 	       this.destAirport = destAirport;
+	       endOfDay=false;
 	    }
 	    
 	    /**
@@ -102,9 +105,8 @@ public class Pilot extends Thread{
 	     @Override
 	     public void run ()
 	     {
-	    	 int interaction = 0;
 	    	 GenericIO.writelnString ("\nPILOT Run \n");
-	    	 while(interaction == 0) {
+	    	 while(!endOfDay) {
 	    		 
 		    	 airport.parkAtTransferGate();
 		    	 airport.informPlaneReadyForBoarding();
@@ -112,8 +114,8 @@ public class Pilot extends Thread{
 		    	 plane.flyToDestinationPoint();
 		    	 destAirport.anounceArrival();
 		    	 plane.flyToDeparturePoint();
-		    	 //interaction = airport.checkPassengers();
-		    	 interaction = 1;
+		    	 
+		    	 endOfDay = airport.CheckEndOfDay();
 	    	 }
 	    	 
 	     }

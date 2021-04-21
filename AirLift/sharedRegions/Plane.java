@@ -57,11 +57,11 @@ public class Plane extends Thread{
 		      { planeSeats.write (passengerId);                    // the customer sits down to wait for his turn
 		      }
 		      catch (MemException e)
-		      { GenericIO.writelnString ("Insertion of customer id in waiting FIFO failed: " + e.getMessage ());
+		      { GenericIO.writelnString ("Insertion of customer id in plane FIFO failed: " + e.getMessage ());
 		          System.exit (1);
 		      }
 		      nPassengers++;
-		      //É mesmo necessário colocar o id dos passageiros numa estrutura de dados??
+		      //
 		   }
 		
 		
@@ -73,6 +73,18 @@ public class Plane extends Thread{
 	        sleep ((long) (3 + 100 * Math.random ()));
 	        }
 	        catch (InterruptedException e) {}
+	        GenericIO.writelnString ("NPassengers = "+nPassengers);
+	        while(nPassengers >0) {
+	        	try
+			      { planeSeats.read ();                    // the customer sits down to wait for his turn
+			      }
+			      catch (MemException e)
+			      { GenericIO.writelnString ("Removal of customer id in plane FIFO failed: " + e.getMessage ());
+			          System.exit (1);
+			      }
+	        	nPassengers--;
+	        }
+	        nPassengers = 0;
 	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
 	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
 		   }

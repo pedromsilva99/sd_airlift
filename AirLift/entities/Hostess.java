@@ -29,13 +29,14 @@ public class Hostess extends Thread{
 	    *     @param barberId barber id
 	    *     @param bShop reference to the barber shop
 	    */
-
+	   private Boolean endOfDay;
 	    public Hostess  (String name, int hostessId, DepartureAirport airport)
 	    {
 	       super (name);
 	       this.hostessId = hostessId;
 	       hostessState = HostessStates.WAITFORFLIGHT;
 	       this.airport = airport;
+	       endOfDay  =false;
 	    }
 	    
 	    /**
@@ -91,12 +92,13 @@ public class Hostess extends Thread{
 	     {
 	    	 int interaction = 0;
 	    	 GenericIO.writelnString ("\nHostess RUN\n");
-	    	 while(interaction == 0) {
+	    	 while(!endOfDay) {
 	    		 int passengerId;                                     // passenger id
 		         boolean endOp;
 		         int i=0;
 		         while (i==0)
-		         { 
+		         { 	   
+		        	 	airport.waitForNextFlight();
 			           endOp = airport.prepareForPassBoarding();
 			           if (endOp) break;
 			           
@@ -107,7 +109,6 @@ public class Hostess extends Thread{
 				           if ( waitPassengerId >=0)                                   
 				        	   passengerId = airport.checkDocuments(waitPassengerId);
 				           else if (waitPassengerId == -1) {
-				        	   
 				        	   hostessState=HostessStates.READYTOFLY;
 				        	   //System.exit(0);
 				           }
@@ -118,8 +119,8 @@ public class Hostess extends Thread{
 				           i=1;
 			           }
 		         }
-		         //interaction = airport.checkPassengers();
-		         interaction = 1;
+		         endOfDay = airport.CheckEndOfDay();
+		         
 	    	 }
 	    	 
 	     }

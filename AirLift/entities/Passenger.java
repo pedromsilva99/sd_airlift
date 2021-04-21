@@ -3,131 +3,125 @@ package entities;
 import genclass.GenericIO;
 import sharedRegions.*;
 
-public class Passenger extends Thread{
-	
-	   /**
-	   *  Passenger identification.
-	   */
+public class Passenger extends Thread {
 
-	   private int passengerId;
+	/**
+	 * Passenger identification.
+	 */
 
-	   /**
-	   *  Passenger state.
-	   */
+	private int passengerId;
 
-	   private int passengerState;
+	/**
+	 * Passenger state.
+	 */
 
-	   /**
-	   *  Reference to the departure airport.
-	   */
+	private int passengerState;
 
-	   private final DepartureAirport airport;
-	   
-	   /**
-	   *  Reference to the plane.
-	   */
+	/**
+	 * Reference to the departure airport.
+	 */
 
-	   private final Plane plane;
-	   
-	   /**
-	   *  Reference to the destination airport.
-	   */
+	private final DepartureAirport airport;
 
-	   private final DestinationAirport destAirport;
-		   
-	   /**
-	   *   Instantiation of a Passenger thread.
-	   *
-	   *     @param name thread name
-	   *     @param passengerId Passenger id
-	   *     @param airport reference to the departure airport
-	   */
+	/**
+	 * Reference to the plane.
+	 */
 
-	    public Passenger  (String name, int passengerId, DepartureAirport airport, Plane plane, DestinationAirport destAirport)
-	    {
-	       super (name);
-	       this.passengerId = passengerId;
-	       passengerState = PassengerStates.GOINGTOAIRPORT;
-	       this.airport = airport;
-	       this.plane = plane;
-	       this.destAirport = destAirport;
-	    }
-	    
-	    /**
-	     *   Set Passenger id.
-	     *
-	     *     @param id Passenger id
-	     */
+	private final Plane plane;
 
-	     public void setPassengerId (int id)
-	     {
-	    	 passengerId = id;
-	     }
+	/**
+	 * Reference to the destination airport.
+	 */
 
-	    /**
-	     *   Get Passenger id.
-	     *
-	     *     @return Passenger id
-	     */
+	private final DestinationAirport destAirport;
 
-	     public int getPassengerId ()
-	     {
-	        return passengerId;
-	     }
+	/**
+	 * Instantiation of a Passenger thread.
+	 *
+	 * @param name        thread name
+	 * @param passengerId Passenger id
+	 * @param airport     reference to the departure airport
+	 */
 
-	    /**
-	     *   Set Passenger state.
-	     *
-	     *     @param state new Passenger state
-	     */
+	public Passenger(String name, int passengerId, DepartureAirport airport, Plane plane,
+			DestinationAirport destAirport) {
+		super(name);
+		this.passengerId = passengerId;
+		passengerState = PassengerStates.GOINGTOAIRPORT;
+		this.airport = airport;
+		this.plane = plane;
+		this.destAirport = destAirport;
+	}
 
-	     public void setPassengerState (int state)
-	     {
-	    	 passengerState = state;
-	     }
+	/**
+	 * Set Passenger id.
+	 *
+	 * @param id Passenger id
+	 */
 
-	    /**
-	     *   Get Passenger state.
-	     *
-	     *     @return Passenger state
-	     */
+	public void setPassengerId(int id) {
+		passengerId = id;
+	}
 
-	     public int getPassengerState ()
-	     {
-	        return passengerState;
-	     }
+	/**
+	 * Get Passenger id.
+	 *
+	 * @return Passenger id
+	 */
 
-	    /**
-	     *   Life cycle of the passenger.
-	     */
+	public int getPassengerId() {
+		return passengerId;
+	}
 
-	     @Override
-	     public void run ()
-	     {
-	    	 GenericIO.writelnString ("Run Passenger "+ passengerId+"\n");
-	    	 travelToAirport();
-	    	 airport.waitInQueue();
-	    	 airport.showDocuments();
-	    	 plane.boardThePlane();
-	    	 destAirport.leaveThePlane();
-	    	 
-	    	 //airport.waitForEndOfFlight();
-	    	 //leave the plane
-	    	 
-	     }
+	/**
+	 * Set Passenger state.
+	 *
+	 * @param state new Passenger state
+	 */
 
-	    /**
-	     *  
-	     *
-	     *  Internal operation Going to Airport
-	     */
-	     
-	     private void travelToAirport ()
-	     {
-	        try
-	        { sleep ((long) (3 + 100 * Math.random ()));
-	        }
-	        catch (InterruptedException e) {}
-	     }
+	public void setPassengerState(int state) {
+		passengerState = state;
+	}
+
+	/**
+	 * Get Passenger state.
+	 *
+	 * @return Passenger state
+	 */
+
+	public int getPassengerState() {
+		return passengerState;
+	}
+
+	/**
+	 * Life cycle of the passenger.
+	 */
+
+	@Override
+	public void run() {
+		GenericIO.writelnString("Run Passenger " + passengerId + "\n");
+		travelToAirport();
+		airport.waitInQueue();
+		airport.showDocuments();
+		plane.boardThePlane();
+		destAirport.leaveThePlane();
+
+		// airport.waitForEndOfFlight();
+		// leave the plane
+
+	}
+
+	/**
+	 * 
+	 *
+	 * Internal operation Going to Airport
+	 */
+
+	private void travelToAirport() {
+		try {
+			sleep((long) (3 + 100 * Math.random()));
+		} catch (InterruptedException e) {
+		}
+	}
 
 }

@@ -31,7 +31,7 @@ public final class SimulPar {
 	   *   Number of passengers .
 	   */  
 
-	   public static final int nPassengers = 10;   
+	   public static final int nPassengers = 21;   
 	  /**
 	   *   It can not be instantiated.
 	   */
