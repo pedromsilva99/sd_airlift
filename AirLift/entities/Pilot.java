@@ -112,8 +112,8 @@ public class Pilot extends Thread{
 		    	 airport.informPlaneReadyForBoarding();
 		    	 airport.waitForAllInBoard();
 		    	 plane.flyToDestinationPoint();
-		    	 destAirport.anounceArrival();
-		    	 plane.flyToDeparturePoint();
+		    	 plane.anounceArrival();
+		    	 destAirport.flyToDeparturePoint();
 		    	 
 		    	 endOfDay = airport.CheckEndOfDay();
 	    	 }

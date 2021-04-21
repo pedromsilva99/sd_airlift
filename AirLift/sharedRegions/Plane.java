@@ -12,6 +12,7 @@ public class Plane extends Thread{
 	    */
 	
 	    private int nPassengers = 0;
+	    private int nPassengersLeft = 0;
 	    
 	    /**
 	    *  Reference to passenger threads.
@@ -30,6 +31,11 @@ public class Plane extends Thread{
 	    */
 
 	    //private final GeneralRepos repos;
+	    
+	    /**
+	     *  Variable that sinalizes the flight arrival
+	     */
+	 	private boolean arrived = false;
 	   
 	   
 		public Plane ()//GeneralRepos repos)
@@ -74,6 +80,34 @@ public class Plane extends Thread{
 	        }
 	        catch (InterruptedException e) {}
 	        GenericIO.writelnString ("NPassengers = "+nPassengers);
+	        
+	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
+	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
+		   }
+		
+		
+		
+		public synchronized void anounceArrival ()
+	    {
+	       try
+	       { sleep ((long) (1 + 100 * Math.random ()));
+	       }
+	       catch (InterruptedException e) {}
+	       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.DEBOARDING);
+	       GenericIO.writelnString ("PLANE ARRIVED");
+	       arrived = true;
+	       notifyAll();
+	       while (nPassengersLeft!=nPassengers)                                 // the hostess waits for the plane to be ready
+		      { try
+		        { 
+		    	  GenericIO.writelnString ("\n\033[0;34mPassenger waiting for passengers to leave the plane\033[0m\n");
+		    	  wait();        
+		        }
+		        catch (Exception e)
+		        { 	
+		        	return ;                                // the hostess wait has come to an end
+		        }
+		      }
 	        while(nPassengers >0) {
 	        	try
 			      { planeSeats.read ();                    // the customer sits down to wait for his turn
@@ -84,20 +118,37 @@ public class Plane extends Thread{
 			      }
 	        	nPassengers--;
 	        }
-	        nPassengers = 0;
-	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
-	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
-		   }
+	        nPassengers=0;
+	        nPassengersLeft=0;
+	       arrived=false;
+	       
+	       
+	    }
 		
-		public synchronized void flyToDeparturePoint ()  //hostess function
-		   {
-	        try
-	        { 
-	        sleep ((long) (3 + 100 * Math.random ()));
-	        }
-	        catch (InterruptedException e) {}
-	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGBACK);
-	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DEPARTURE AIRPORT \u001B[0m");
+		public synchronized boolean leaveThePlane ()  //hostess function
+		   {   
+		      while (!arrived)                                 // the hostess waits for the plane to be ready
+		      { try
+		        { 
+		    	  GenericIO.writelnString ("\n\033[0;34mPassenger waiting for plane arrival\033[0m\n");
+		    	  wait();        
+		        }
+		        catch (Exception e)
+		        { 	
+		        	return true;                                     // the hostess wait has come to an end
+		        }
+		      }
+		      nPassengersLeft++;
+		      notifyAll();
+		      int passengerId;                                      // passenger id
+	      	  Passenger passenger = ((Passenger) Thread.currentThread ()); 	
+		      passengerId = passenger.getPassengerId ();
+		      passen[passengerId] = passenger;
+		      passen[passengerId].setPassengerState (PassengerStates.ATDESTINATION);
+		      
+		      GenericIO.writelnString ("\n\033[0;34mPassenger " + passengerId +" is on the destination\033[0m\n");
+		      
+		      return false;
 		   }
 		
 		

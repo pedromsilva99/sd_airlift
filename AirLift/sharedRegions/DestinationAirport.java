@@ -18,10 +18,7 @@ public class DestinationAirport extends Thread{
    
     private final Passenger [] passen;
     
-    /**
-     *  Variable that sinalizes the flight arrival
-     */
- 	private boolean arrived = false;
+   
 	
 	public DestinationAirport ()//GeneralRepos repos)
 	   {
@@ -33,41 +30,18 @@ public class DestinationAirport extends Thread{
 	      //this.repos = repos;
 	   }
 	
-	public synchronized void anounceArrival ()
-    {
-       try
-       { sleep ((long) (1 + 100 * Math.random ()));
-       }
-       catch (InterruptedException e) {}
-       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.DEBOARDING);
-       GenericIO.writelnString ("PLANE ARRIVED");
-       arrived = true;
-       notifyAll();
-    }
-	
-	public synchronized boolean leaveThePlane ()  //hostess function
-	   {   
-	      while (!arrived)                                 // the hostess waits for the plane to be ready
-	      { try
-	        { 
-	    	  GenericIO.writelnString ("\n\033[0;34mPassenger waiting for plane arrival\033[0m\n");
-	    	  wait();        
-	        }
-	        catch (Exception e)
-	        { 	
-	        	return true;                                     // the hostess wait has come to an end
-	        }
-	      }
-	      
-	      int passengerId;                                      // passenger id
-      	  Passenger passenger = ((Passenger) Thread.currentThread ()); 	
-	      passengerId = passenger.getPassengerId ();
-	      passen[passengerId] = passenger;
-	      passen[passengerId].setPassengerState (PassengerStates.ATDESTINATION);
-	      
-	      GenericIO.writelnString ("\n\033[0;34mPassenger " + passengerId +" is on the destination\033[0m\n");
-	      
-	      return false;
+	public synchronized void flyToDeparturePoint ()  //hostess function
+	   {
+     try
+     { 
+     sleep ((long) (3 + 100 * Math.random ()));
+     }
+     catch (InterruptedException e) {}
+     ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGBACK);
+     GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DEPARTURE AIRPORT \u001B[0m");
+
 	   }
+	
+	
 	
 }

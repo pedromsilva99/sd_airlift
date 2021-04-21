@@ -104,7 +104,7 @@ public class Passenger extends Thread {
 		airport.waitInQueue();
 		airport.showDocuments();
 		plane.boardThePlane();
-		destAirport.leaveThePlane();
+		plane.leaveThePlane();
 
 		// airport.waitForEndOfFlight();
 		// leave the plane
