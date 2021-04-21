@@ -117,7 +117,7 @@ public class Pilot extends Thread{
 		    	 
 		    	 endOfDay = airport.CheckEndOfDay();
 	    	 }
-	    	 
+	 			GenericIO.writelnString("\033[41m Pilot End Of Life \033[0m");
 	     }
 	
 }

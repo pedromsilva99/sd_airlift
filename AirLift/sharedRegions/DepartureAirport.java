@@ -131,6 +131,7 @@ public class DepartureAirport extends Thread {
 				|| ((nLeft + passengersOnBoard) <= SimulPar.minInPlane && nLine == 0)) {
 			plane_ready_to_fly = true;
 			passengersOnBoard = 0;
+			notifyAll();
 			return -1;
 		}
 		while (nLine == 0) { // the hostess waits for a passenger to get in the queue

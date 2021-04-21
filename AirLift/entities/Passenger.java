@@ -106,8 +106,7 @@ public class Passenger extends Thread {
 		plane.boardThePlane();
 		plane.leaveThePlane();
 
-		// airport.waitForEndOfFlight();
-		// leave the plane
+		GenericIO.writelnString("\033[41m Passenger End Of Life \033[0m");
 
 	}
 
