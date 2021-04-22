@@ -27,6 +27,12 @@ public class Plane extends Thread{
 	    private MemFIFO<Integer> planeSeats; 
 
 	    /**
+		 * Number of the flight.
+		 */
+
+		 private int flightNumber = 0;
+		 
+	    /**
 	    *   Reference to the general repository.
 	    */
 
@@ -82,6 +88,8 @@ public class Plane extends Thread{
 	        catch (InterruptedException e) {}
 	        GenericIO.writelnString ("NPassengers = "+nPassengers);
 	        
+	        flightNumber++;
+	        repos.reportSpecificStatus("\nFlight " + flightNumber + " : departed with " + nPassengers + " passengers.");
 	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
 	        repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");

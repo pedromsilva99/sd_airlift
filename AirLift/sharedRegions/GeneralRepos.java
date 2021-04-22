@@ -237,5 +237,24 @@ public class GeneralRepos {
 	             System.exit (1);
 	           }
 	     }
+	     
+	     public synchronized void reportSpecificStatus (String message)
+	     {
+	        TextFile log = new TextFile ();                      // instantiation of a text file handler
+
+	        String lineStatus = "";                              // state line to be printed
+
+	        if (!log.openForAppending (".", logFileName))
+	           { GenericIO.writelnString ("The operation of opening for appending the file " + logFileName + " failed!");
+	             System.exit (1);
+	           }
+	        
+	        log.writelnString (message);
+	        if (!log.close ())
+	           { GenericIO.writelnString ("The operation of closing the file " + logFileName + " failed!");
+	             System.exit (1);
+	           }
+	        
+	     }
 	   
 }

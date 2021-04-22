@@ -16,6 +16,12 @@ public class DepartureAirport extends Thread {
 	 boolean next_fly = false;
 
 	/**
+	 * Number of the flight.
+	 */
+
+	 private int flightNumber = 0;
+	
+	/**
 	 * Number of people in line.
 	 */
 
@@ -191,6 +197,11 @@ public class DepartureAirport extends Thread {
 			} catch (InterruptedException e) {
 			}
 		}
+		
+		repos.reportSpecificStatus("\n Flight " + flightNumber + ": passenger " + waitPassengerId + " checked.");
+		
+		((Hostess) Thread.currentThread()).setHostessState(HostessStates.CHECKPASSENGER);
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
@@ -205,7 +216,9 @@ public class DepartureAirport extends Thread {
 	 }
 
 	 public synchronized void informPlaneReadyForBoarding() {
-
+		flightNumber++;
+		repos.reportSpecificStatus("\nFlight " + flightNumber + ": boarding started."); 
+		 
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.READYFORBOARDING);
 		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		plane_at_transfer_gate = true;
