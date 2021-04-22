@@ -62,6 +62,7 @@ public class Plane extends Thread{
 		
 		public synchronized void boardThePlane ()  //hostess function
 		   {   
+			  nPassengers++;
 		      int passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
 		      ((Passenger) Thread.currentThread ()).setPassengerState (PassengerStates.INFLIGHT);
 		      repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
@@ -73,7 +74,7 @@ public class Plane extends Thread{
 		      { GenericIO.writelnString ("Insertion of customer id in plane FIFO failed: " + e.getMessage ());
 		          System.exit (1);
 		      }
-		      nPassengers++;
+		      
 		      //
 		   }
 		
@@ -111,7 +112,7 @@ public class Plane extends Thread{
 	       while (nPassengersLeft!=nPassengers)                                 // the hostess waits for the plane to be ready
 		      { try
 		        { 
-		    	  GenericIO.writelnString ("\n\033[0;34mPassenger waiting for passengers to leave the plane\033[0m\n");
+		    	  GenericIO.writelnString ("\n\033[0;34mPILOT waiting for passengers to leave the plane\033[0m\n");
 		    	  wait();        
 		        }
 		        catch (Exception e)

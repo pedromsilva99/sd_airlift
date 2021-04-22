@@ -33,7 +33,7 @@ public class Passenger extends Thread {
 	 * Reference to the destination airport.
 	 */
 
-	private final DestinationAirport destAirport;
+	//private final DestinationAirport destAirport;
 
 	/**
 	 * Instantiation of a Passenger thread.
@@ -50,7 +50,7 @@ public class Passenger extends Thread {
 		passengerState = PassengerStates.GOINGTOAIRPORT;
 		this.airport = airport;
 		this.plane = plane;
-		this.destAirport = destAirport;
+		//this.destAirport = destAirport;
 	}
 
 	/**

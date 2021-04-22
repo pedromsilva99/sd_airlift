@@ -85,14 +85,13 @@ public class Hostess extends Thread {
 
 	@Override
 	public void run() {
-		int interaction = 0;
 		GenericIO.writelnString("\nHostess RUN\n");
 		while (!endOfDay) {
-			int passengerId; // passenger id
+			//int passengerId; // passenger id
 			boolean endOp;
 			int i = 0;
 			while (i == 0) {
-				airport.waitForNextFlight();
+				//
 				endOp = airport.prepareForPassBoarding();
 				if (endOp)
 					break;
@@ -101,9 +100,10 @@ public class Hostess extends Thread {
 				while (hostessState != HostessStates.READYTOFLY) {
 					int waitPassengerId = airport.waitForNextPassenger();
 					if (waitPassengerId >= 0)
-						passengerId = airport.checkDocuments(waitPassengerId);
+						airport.checkDocuments(waitPassengerId);
 					else if (waitPassengerId == -1) {
-						hostessState = HostessStates.READYTOFLY;
+						airport.informPlaneReadyToTakeOff();
+						//hostessState = HostessStates.READYTOFLY;
 						// System.exit(0);
 					} else {
 						GenericIO.writelnString("ERROR");
@@ -111,6 +111,7 @@ public class Hostess extends Thread {
 					}
 					i = 1;
 				}
+				airport.waitForNextFlight();
 			}
 			endOfDay = airport.CheckEndOfDay();
 		}

@@ -11,9 +11,9 @@ public class DepartureAirport extends Thread {
 	 * Control variable for the plane
 	 */
 
-	 boolean plane_at_transfer_gate = false;
 	 boolean plane_ready_to_fly = false;
 	 boolean next_fly = false;
+	 boolean plane_ready_boarding = false;
 
 	/**
 	 * Number of the flight.
@@ -131,15 +131,21 @@ public class DepartureAirport extends Thread {
 		}
 		return true;
 	 }
+	 
+	 public synchronized void informPlaneReadyToTakeOff() {
+		 ((Hostess) Thread.currentThread()).setHostessState(HostessStates.READYTOFLY);
+		 repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+		 plane_ready_to_fly = true;
+		 passengersOnBoard = 0;
+		 notifyAll();
+	 }
 
 	 public synchronized int waitForNextPassenger() { // hostess function
 		GenericIO.writelnString("\033[41mPassengers in line " + nLine + "\033[0m");
 
 		if ((passengersOnBoard >= SimulPar.minInPlane && nLine == 0) || passengersOnBoard == SimulPar.maxInPlane
 				|| ((nLeft + passengersOnBoard) <= SimulPar.minInPlane && nLine == 0)) {
-			plane_ready_to_fly = true;
-			passengersOnBoard = 0;
-			notifyAll();
+			
 			return -1;
 		}
 		while (nLine == 0) { // the hostess waits for a passenger to get in the queue
@@ -151,6 +157,9 @@ public class DepartureAirport extends Thread {
 			}
 		}
 
+		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+		
 		if (nLine > 0)
 			nLine -= 1; // the hostess takes notice some one is in Line
 
@@ -172,7 +181,8 @@ public class DepartureAirport extends Thread {
 
 	 public synchronized boolean prepareForPassBoarding() // hostess function
 	 {
-		while (!plane_at_transfer_gate) // the hostess waits for the plane to be ready
+		
+		while (!plane_ready_boarding) // the hostess waits for the plane to be ready
 		{
 			try {
 				GenericIO.writelnString("\n\033[0;34mHostess Waiting for Plane\033[0m\n");
@@ -216,12 +226,17 @@ public class DepartureAirport extends Thread {
 	 }
 
 	 public synchronized void informPlaneReadyForBoarding() {
+		 
+		try {
+			sleep((long) (3 + 20 * Math.random()));
+		} catch (InterruptedException e) {
+		}
 		flightNumber++;
 		repos.reportSpecificStatus("\nFlight " + flightNumber + ": boarding started."); 
 		 
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.READYFORBOARDING);
 		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
-		plane_at_transfer_gate = true;
+		plane_ready_boarding = true;
 		GenericIO.writelnString("Plane ready to flight");
 		notifyAll();
 
@@ -229,6 +244,8 @@ public class DepartureAirport extends Thread {
 
 	 public synchronized void waitForAllInBoard() {
 
+		((Pilot) Thread.currentThread()).setPilotState(PilotStates.WAITINGFORBOARDING);
+		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		while (!plane_ready_to_fly) // the pilot waits for the plane to be ready
 		{
 			try {
@@ -239,8 +256,7 @@ public class DepartureAirport extends Thread {
 			}
 		}
 
-		((Pilot) Thread.currentThread()).setPilotState(PilotStates.WAITINGFORBOARDING);
-		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
+		
 		GenericIO.writelnString("Everybody on board");
 		GenericIO.writelnString("Passengers left: " + nLeft);
 	 }
@@ -268,7 +284,8 @@ public class DepartureAirport extends Thread {
 	 }
 
 	 public synchronized void waitForNextFlight() { // hostess function
-
+		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORFLIGHT);
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ()); 
 		while (!next_fly) { // the hostess waits for the next flight
 			try {
 				wait();

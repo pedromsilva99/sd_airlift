@@ -69,7 +69,7 @@ public class GeneralRepos {
 	         this.logFileName = "logger";
 	         else this.logFileName = logFileName;
 	      this.nIter = nIter;
-	      pilotState = PilotStates.FLYINGBACK;
+	      pilotState = PilotStates.ATTRANSFERGATE;
 	      passengerState = new int [SimulPar.nPassengers];
 	      for (int i = 0; i < SimulPar.nPassengers; i++)
 	    	  passengerState[i] = PassengerStates.GOINGTOAIRPORT;

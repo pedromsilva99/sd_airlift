@@ -108,12 +108,14 @@ public class Pilot extends Thread{
 	    	 GenericIO.writelnString ("\nPILOT Run \n");
 	    	 while(!endOfDay) {
 	    		 
-		    	 airport.parkAtTransferGate();
+	    		 
 		    	 airport.informPlaneReadyForBoarding();
 		    	 airport.waitForAllInBoard();
 		    	 plane.flyToDestinationPoint();
 		    	 plane.anounceArrival();
 		    	 destAirport.flyToDeparturePoint();
+		    	 airport.parkAtTransferGate();
+		    	 
 		    	 
 		    	 endOfDay = airport.CheckEndOfDay();
 	    	 }
