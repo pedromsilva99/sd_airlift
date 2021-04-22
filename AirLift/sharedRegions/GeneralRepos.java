@@ -37,6 +37,24 @@ public class GeneralRepos {
 	   */
 
 	   private int hostessState;
+	   
+	  /**
+	   *  Number of passengers presently forming a queue to board the plane
+	   */
+
+	   private int inQueue = 0;
+	   
+	  /**
+	   *  Number of passengers in the plane
+	   */
+
+	   private int inFlight = 0;
+	   
+	  /**
+	   *  Number of passengers that have already arrived at their destination
+	   */
+
+	   private int inDestination = 0;
 
 	  /**
 	   *   Instantiation of a general repository object.
@@ -94,6 +112,42 @@ public class GeneralRepos {
 	    {
 	       hostessState = state;
 	       reportStatus ();
+	    }
+	    
+	   /**
+	    *   Set queue.
+	    *
+	    *     @param number number to add
+	    */
+
+	    public synchronized void setQueue (int number)
+	    {
+	       inQueue += number;
+	       //reportStatus ();
+	    }
+	    
+	   /**
+	    *   Set flight.
+	    *
+	    *     @param number number to add
+	    */
+
+	    public synchronized void setFlight (int number)
+	    {
+	       inFlight += number;
+	       //reportStatus ();
+	    }
+	    
+	   /**
+	    *   Set destination.
+	    *
+	    *     @param number number to add
+	    */
+
+	    public synchronized void setDestisnation (int number)
+	    {
+	       inDestination += number;
+	       //reportStatus ();
 	    }
 	    
 	   /**
@@ -175,6 +229,8 @@ public class GeneralRepos {
 	            case PassengerStates.ATDESTINATION:   lineStatus += " ATDS ";
 	                                               	  break;
 	          }
+	        
+	        lineStatus += " " + inQueue + "    " + inFlight + "    " + inDestination;
 	        log.writelnString (lineStatus);
 	        if (!log.close ())
 	           { GenericIO.writelnString ("The operation of closing the file " + logFileName + " failed!");

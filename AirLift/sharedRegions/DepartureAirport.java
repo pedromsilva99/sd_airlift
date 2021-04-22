@@ -80,8 +80,8 @@ public class DepartureAirport extends Thread {
 		passengerId = passenger.getPassengerId();
 		passen[passengerId] = passenger;
 		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
-		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
-
+		repos.setQueue(1);
+		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());	
 		nLine++;
 		GenericIO.writelnString(
 				"\033[0;91m" + "Pasenger " + passengerId + " waiting in queue in " + nLine + " position" + "\u001B[0m");
@@ -194,6 +194,8 @@ public class DepartureAirport extends Thread {
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
+		repos.setQueue(-1);
+		repos.setFlight(1);
 		
 		notifyAll();
 		passengersOnBoard++;

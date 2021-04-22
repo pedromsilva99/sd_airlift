@@ -141,6 +141,8 @@ public class Plane extends Thread{
 		        	return true;                                     // the hostess wait has come to an end
 		        }
 		      }
+		      repos.setFlight(-1);
+		      repos.setDestisnation(1);
 		      nPassengersLeft++;
 		      notifyAll();
 		      int passengerId;                                      // passenger id
