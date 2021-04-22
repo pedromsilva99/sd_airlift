@@ -11,53 +11,54 @@ public class DepartureAirport extends Thread {
 	 * Control variable for the plane
 	 */
 
-	boolean plane_at_transfer_gate = false;
-	boolean plane_ready_to_fly = false;
-	boolean next_fly = false;
+	 boolean plane_at_transfer_gate = false;
+	 boolean plane_ready_to_fly = false;
+	 boolean next_fly = false;
 
 	/**
 	 * Number of people in line.
 	 */
 
-	private int nLine = 0;
+	 private int nLine = 0;
 
 	/**
 	 * Number of people left to fly to destination
 	 */
 
-	private int nLeft = SimulPar.nPassengers;
+	 private int nLeft = SimulPar.nPassengers;
 
 	/**
 	 * Reference to passengers on board.
 	 */
 
-	private int passengersOnBoard = 0;
+	 private int passengersOnBoard = 0;
 	/**
 	 * Reference to passenger threads.
 	 */
 
-	private final Passenger[] passen;
+	 private final Passenger[] passen;
 
 	/**
 	 * Waiting seats occupation.
 	 */
 
-	private MemFIFO<Integer> waitingLine;
+	 private MemFIFO<Integer> waitingLine;
 
 	/**
 	 * Reference to call the passenger with ID
 	 */
-	private int calledPassengerId = -1;
+	 private int calledPassengerId = -1;
 
 	/**
 	 * Reference to the general repository.
 	 */
-	private int calledPassengerDocuments = -1;
+	
+	 private final GeneralRepos repos;
+	
+	 private int calledPassengerDocuments = -1;
 
-	// private final GeneralRepos repos;
-
-	public DepartureAirport()// GeneralRepos repos)
-	{
+	 public DepartureAirport(GeneralRepos repos)
+	 {
 		nLine = 0;
 		passen = new Passenger[SimulPar.nPassengers];
 		for (int i = 0; i < SimulPar.nPassengers; i++)
@@ -69,10 +70,10 @@ public class DepartureAirport extends Thread {
 			waitingLine = null;
 			System.exit(1);
 		}
-		// this.repos = repos;
-	}
+		this.repos = repos;
+	 }
 
-	public synchronized void waitInQueue() {
+	 public synchronized void waitInQueue() {
 
 		int passengerId; // passenger id
 		Passenger passenger = ((Passenger) Thread.currentThread());
@@ -98,10 +99,9 @@ public class DepartureAirport extends Thread {
 			} catch (InterruptedException e) {
 			}
 		}
-
-	}
-
-	public synchronized boolean showDocuments() {
+	 }
+ 
+	 public synchronized boolean showDocuments() {
 
 		int passengerId; // passenger id
 		Passenger passenger = ((Passenger) Thread.currentThread());
@@ -122,9 +122,9 @@ public class DepartureAirport extends Thread {
 			}
 		}
 		return true;
-	}
+	 }
 
-	public synchronized int waitForNextPassenger() { // hostess function
+	 public synchronized int waitForNextPassenger() { // hostess function
 		GenericIO.writelnString("\033[41mPassengers in line " + nLine + "\033[0m");
 
 		if ((passengersOnBoard >= SimulPar.minInPlane && nLine == 0) || passengersOnBoard == SimulPar.maxInPlane
@@ -160,10 +160,10 @@ public class DepartureAirport extends Thread {
 		notifyAll();
 
 		return passengerId;
-	}
+	 }
 
-	public synchronized boolean prepareForPassBoarding() // hostess function
-	{
+	 public synchronized boolean prepareForPassBoarding() // hostess function
+	 {
 		while (!plane_at_transfer_gate) // the hostess waits for the plane to be ready
 		{
 			try {
@@ -177,9 +177,9 @@ public class DepartureAirport extends Thread {
 		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
 		next_fly = false;
 		return false;
-	}
+	 }
 
-	public synchronized int checkDocuments(int waitPassengerId) {
+	 public synchronized int checkDocuments(int waitPassengerId) {
 		GenericIO.writelnString("\n\033[42m----Enter Check Documents----\033[0m");
 
 		while (waitPassengerId != calledPassengerDocuments) {
@@ -196,19 +196,18 @@ public class DepartureAirport extends Thread {
 		nLeft--;
 		GenericIO.writelnString("Passengers on Board " + passengersOnBoard);
 		return (waitPassengerId);
+	 }
 
-	}
-
-	public synchronized void informPlaneReadyForBoarding() {
+	 public synchronized void informPlaneReadyForBoarding() {
 
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.READYFORBOARDING);
 		plane_at_transfer_gate = true;
 		GenericIO.writelnString("Plane ready to flight");
 		notifyAll();
 
-	}
+	 }
 
-	public synchronized void waitForAllInBoard() {
+	 public synchronized void waitForAllInBoard() {
 
 		while (!plane_ready_to_fly) // the pilot waits for the plane to be ready
 		{
@@ -223,9 +222,9 @@ public class DepartureAirport extends Thread {
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.WAITINGFORBOARDING);
 		GenericIO.writelnString("Everybody on board");
 		GenericIO.writelnString("Passengers left: " + nLeft);
-	}
+	 }
 
-	public synchronized void parkAtTransferGate() {
+	 public synchronized void parkAtTransferGate() {
 		try {
 			sleep((long) (5 + 100 * Math.random()));
 		} catch (InterruptedException e) {
@@ -236,17 +235,17 @@ public class DepartureAirport extends Thread {
 		next_fly = true;
 		notifyAll();
 
-	}
+	 }
 
-	public int checkPassengers() {
+	 public int checkPassengers() {
 		return nLeft;
-	}
+	 }
 
-	public Boolean CheckEndOfDay() {
+	 public Boolean CheckEndOfDay() {
 		return nLeft == 0;
-	}
+	 }
 
-	public synchronized void waitForNextFlight() { // hostess function
+	 public synchronized void waitForNextFlight() { // hostess function
 
 		while (!next_fly) { // the hostess waits for a passenger to get in the queue
 			try {
@@ -255,6 +254,6 @@ public class DepartureAirport extends Thread {
 				return; // the hostess wait has come to an end
 			}
 		}
-	}
+	 }
 
 }

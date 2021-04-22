@@ -30,7 +30,7 @@ public class Plane extends Thread{
 	    *   Reference to the general repository.
 	    */
 
-	    //private final GeneralRepos repos;
+	    private final GeneralRepos repos;
 	    
 	    /**
 	     *  Variable that sinalizes the flight arrival
@@ -38,7 +38,7 @@ public class Plane extends Thread{
 	 	private boolean arrived = false;
 	   
 	   
-		public Plane ()//GeneralRepos repos)
+		public Plane (GeneralRepos repos)
 		   {
 			  passen = new Passenger [SimulPar.nPassengers];
 		      for (int i = 0; i < SimulPar.nPassengers; i++)
@@ -51,7 +51,7 @@ public class Plane extends Thread{
 		        planeSeats = null;
 		        System.exit (1);
 		      }
-		      //this.repos = repos;
+		      this.repos = repos;
 		   }
 		
 		public synchronized void boardThePlane ()  //hostess function

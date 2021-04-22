@@ -1,6 +1,7 @@
 package main;
 
 import entities.*;
+import genclass.FileOp;
 import genclass.GenericIO;
 import sharedRegions.*;
 /**
@@ -29,11 +30,28 @@ public class AirLift {
         boolean success;                                        // end of operation flag
         
         GenericIO.writelnString ("\n" + "Problem of the AirLift\n");
-        GenericIO.writeString ("Number of iterations of the customer life cycle? ");
+        //GenericIO.writeString ("Number of iterations of the customer life cycle? ");
+        nIter = 0;//GenericIO.readlnInt ();
+        do
+        { GenericIO.writeString ("Logging file name? ");
+          fileName = GenericIO.readlnString ();
+          if (FileOp.exists (".", fileName))
+             { do
+               { GenericIO.writeString ("There is already a file with this name. Delete it (y - yes; n - no)? ");
+                 opt = GenericIO.readlnChar ();
+               } while ((opt != 'y') && (opt != 'n'));
+               if (opt == 'y')
+                  success = true;
+                  else success = false;
+             }
+             else success = true;
+        } while (!success);
+
+        repos = new GeneralRepos (fileName, nIter);
         
-        airport = new DepartureAirport ();//repos);
-        plane = new Plane ();
-        destAirport = new DestinationAirport();
+        airport = new DepartureAirport (repos);
+        plane = new Plane (repos);
+        destAirport = new DestinationAirport(repos);
         for (int i = 0; i < SimulPar.nPilots; i++)
         	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport, plane, destAirport);
         for (int i = 0; i < SimulPar.nHostess; i++)
