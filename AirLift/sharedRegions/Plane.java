@@ -58,6 +58,7 @@ public class Plane extends Thread{
 		   {   
 		      int passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
 		      ((Passenger) Thread.currentThread ()).setPassengerState (PassengerStates.INFLIGHT);
+		      repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 		      GenericIO.writelnString ("\u001B[45mPASSENGER IN FLIGHT " + passengerId + "\u001B[0m");
 		      try
 		      { planeSeats.write (passengerId);                    // the customer sits down to wait for his turn
@@ -82,6 +83,7 @@ public class Plane extends Thread{
 	        GenericIO.writelnString ("NPassengers = "+nPassengers);
 	        
 	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
+	        repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
 		   }
 		
@@ -94,6 +96,7 @@ public class Plane extends Thread{
 	       }
 	       catch (InterruptedException e) {}
 	       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.DEBOARDING);
+	       repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	       GenericIO.writelnString ("PLANE ARRIVED");
 	       arrived = true;
 	       notifyAll();
@@ -145,6 +148,7 @@ public class Plane extends Thread{
 		      passengerId = passenger.getPassengerId ();
 		      passen[passengerId] = passenger;
 		      passen[passengerId].setPassengerState (PassengerStates.ATDESTINATION);
+		      repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 		      
 		      GenericIO.writelnString ("\n\033[0;34mPassenger " + passengerId +" is on the destination\033[0m\n");
 		      

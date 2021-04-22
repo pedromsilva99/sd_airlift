@@ -44,6 +44,7 @@ public class DestinationAirport extends Thread{
      }
      catch (InterruptedException e) {}
      ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGBACK);
+     repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
      GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DEPARTURE AIRPORT \u001B[0m");
 
 	   }

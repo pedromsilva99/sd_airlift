@@ -68,7 +68,7 @@ public class GeneralRepos {
 	    public synchronized void setPilotState (int state)
 	    {
 	    	pilotState = state;
-	       //reportStatus ();
+	       reportStatus ();
 	    }
 
 	   /**
@@ -81,7 +81,7 @@ public class GeneralRepos {
 	    public synchronized void setPassengerState (int id, int state)
 	    {
 	       passengerState[id] = state;
-	       //reportStatus ();
+	       reportStatus ();
 	    }
 
 	   /**
@@ -92,8 +92,8 @@ public class GeneralRepos {
 
 	    public synchronized void setHostessState (int state)
 	    {
-	    	hostessState = state;
-	       //reportStatus ();
+	       hostessState = state;
+	       reportStatus ();
 	    }
 	    
 	   /**

@@ -80,6 +80,7 @@ public class DepartureAirport extends Thread {
 		passengerId = passenger.getPassengerId();
 		passen[passengerId] = passenger;
 		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
+		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 
 		nLine++;
 		GenericIO.writelnString(
@@ -108,6 +109,7 @@ public class DepartureAirport extends Thread {
 		passengerId = passenger.getPassengerId();
 		passen[passengerId] = passenger;
 		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
+		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 
 		calledPassengerDocuments = passengerId;
 		GenericIO.writelnString("\033[42m-Passenger " + passengerId + " giving his doccuments\033[0m");
@@ -175,6 +177,7 @@ public class DepartureAirport extends Thread {
 		}
 		int hostessId = ((Hostess) Thread.currentThread()).getHostessId();
 		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		next_fly = false;
 		return false;
 	 }
@@ -191,6 +194,7 @@ public class DepartureAirport extends Thread {
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
+		
 		notifyAll();
 		passengersOnBoard++;
 		nLeft--;
@@ -201,6 +205,7 @@ public class DepartureAirport extends Thread {
 	 public synchronized void informPlaneReadyForBoarding() {
 
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.READYFORBOARDING);
+		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		plane_at_transfer_gate = true;
 		GenericIO.writelnString("Plane ready to flight");
 		notifyAll();
@@ -220,6 +225,7 @@ public class DepartureAirport extends Thread {
 		}
 
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.WAITINGFORBOARDING);
+		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		GenericIO.writelnString("Everybody on board");
 		GenericIO.writelnString("Passengers left: " + nLeft);
 	 }
@@ -230,6 +236,7 @@ public class DepartureAirport extends Thread {
 		} catch (InterruptedException e) {
 		}
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.ATTRANSFERGATE);
+		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		GenericIO.writelnString("PLANE AT TRANSFER GATE");
 		plane_ready_to_fly = false;
 		next_fly = true;
@@ -247,7 +254,7 @@ public class DepartureAirport extends Thread {
 
 	 public synchronized void waitForNextFlight() { // hostess function
 
-		while (!next_fly) { // the hostess waits for a passenger to get in the queue
+		while (!next_fly) { // the hostess waits for the next flight
 			try {
 				wait();
 			} catch (Exception e) {
