@@ -65,6 +65,33 @@ public class AirLift {
         	hostess[i].start ();
         for (int i = 0; i < SimulPar.nPassengers; i++)
         	passenger[i].start ();
+        
+        /* waiting for the end of the simulation */
+
+        GenericIO.writelnString ();
+        for (int i = 0; i < SimulPar.nPassengers; i++)
+        { try
+          { passenger[i].join ();
+          }
+          catch (InterruptedException e) {}
+          GenericIO.writelnString ("The passenger " + (i+1) + " has terminated.");
+        }
+        for (int i = 0; i < SimulPar.nHostess; i++)
+        { try
+          { hostess[i].join ();
+          }
+          catch (InterruptedException e) {}
+          GenericIO.writelnString ("The hostess " + (i+1) + " has terminated.");
+        }
+        for (int i = 0; i < SimulPar.nPilots; i++)
+        { try
+          { pilot[i].join ();
+          }
+          catch (InterruptedException e) {}
+          GenericIO.writelnString ("The pilot " + (i+1) + " has terminated.");
+        }
+        
+
 
 	}
 
