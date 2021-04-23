@@ -101,6 +101,8 @@ public class GeneralRepos {
 	    public synchronized void setPassengerState (int id, int state)
 	    {
 	       passengerState[id] = state;
+	       	
+	       
 	       reportStatus ();
 	    }
 
@@ -110,13 +112,21 @@ public class GeneralRepos {
 	    *     @param state hostess state
 	    */
 
-	    public synchronized void setHostessState (int state)
-	    {
+	    public synchronized void setHostessState (int state, int id)
+	    {  
+	       if(hostessState == HostessStates.WAITFORPASSENGER && state == HostessStates.CHECKPASSENGER)
+	    	   reportSpecificStatus("\nFlight " + flightNumber + ": passenger " + id + " checked.");
 	       hostessState = state;
 	       if (hostessState  ==HostessStates.READYTOFLY)
 	    	   reportSpecificStatus("\nFlight " + flightNumber + " : departed with " +inFlight + " passengers.");
+	       
 	       reportStatus ();
 	    }
+	    
+	    public synchronized void setHostessState (int state) {
+	    	setHostessState(state,0);
+	    }
+	    
 	    
 	   /**
 	    *   Set queue.

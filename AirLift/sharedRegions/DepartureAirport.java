@@ -211,10 +211,10 @@ public class DepartureAirport extends Thread {
 			}
 		}
 		
-		repos.reportSpecificStatus("\nFlight " + flightNumber + ": passenger " + waitPassengerId + " checked.");
+		//repos.reportSpecificStatus("\nFlight " + flightNumber + ": passenger " + waitPassengerId + " checked.");
 		
 		((Hostess) Thread.currentThread()).setHostessState(HostessStates.CHECKPASSENGER);
-		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState (),waitPassengerId );
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
