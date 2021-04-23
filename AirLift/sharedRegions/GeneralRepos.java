@@ -15,12 +15,6 @@ public class GeneralRepos {
 	   private final String logFileName;
 
 	  /**
-	   *  Number of iterations of the customer life cycle.
-	   */
-
-	   private final int nIter;
-
-	  /**
 	   *  State of the pilot.
 	   */
 
@@ -43,7 +37,8 @@ public class GeneralRepos {
 	   */
 
 	   private int inQueue = 0;
-	   /**
+	   
+	  /**
 	   *  Number of flight
 	   */
 
@@ -68,12 +63,11 @@ public class GeneralRepos {
 	   *     @param nIter number of iterations of the customer life cycle
 	   */
 	   
-	   public GeneralRepos (String logFileName, int nIter)
+	   public GeneralRepos (String logFileName)
 	   {
 	      if ((logFileName == null) || Objects.equals (logFileName, ""))
 	         this.logFileName = "logger";
 	         else this.logFileName = logFileName;
-	      this.nIter = nIter;
 	      pilotState = PilotStates.ATTRANSFERGATE;
 	      passengerState = new int [SimulPar.nPassengers];
 	      for (int i = 0; i < SimulPar.nPassengers; i++)
@@ -248,11 +242,16 @@ public class GeneralRepos {
 	           }
 	     }
 	     
+	    /**
+	     *   Write a specific state line at the end of the logging file, for example an message informing that
+	     *   the plane has arrived.
+	     *
+	     *     @param message message to write in the logging file
+	     */
+	     
 	     public synchronized void reportSpecificStatus (String message)
 	     {
 	        TextFile log = new TextFile ();                      // instantiation of a text file handler
-
-	        String lineStatus = "";                              // state line to be printed
 
 	        if (!log.openForAppending (".", logFileName))
 	           { GenericIO.writelnString ("The operation of opening for appending the file " + logFileName + " failed!");

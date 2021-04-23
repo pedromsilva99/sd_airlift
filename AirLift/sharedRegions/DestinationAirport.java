@@ -2,20 +2,9 @@ package sharedRegions;
 
 import main.*;
 import entities.*;
-import commInfra.*;
 import genclass.GenericIO;
 
 public class DestinationAirport extends Thread{
-	
-	/**
-    *  Number of people in the destination airport.
-    */
-	private int nPassengers = 0;
-	
-	/**
-    *  Number of the flight.
-    */
-	private int flightNumber = 0;
 	
 	/**
     *  Reference to passenger threads.
@@ -43,7 +32,6 @@ public class DestinationAirport extends Thread{
 	
 	public synchronized void flyToDeparturePoint ()  //hostess function
 	   {
-	 flightNumber++;
      try
      { 
      sleep ((long) (3 + 100 * Math.random ()));

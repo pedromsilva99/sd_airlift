@@ -5,12 +5,12 @@ import genclass.FileOp;
 import genclass.GenericIO;
 import sharedRegions.*;
 /**
- *   Simulation of the Problem of the Sleeping Barbers.
+ *   Simulation of the Problem of the Air Lift.
  *   
  */
 public class AirLift {
 	 /**
-	   *    Main class for the Airport Rhapsody Problem. It launches the threads for all entities of the problem.
+	   *    Main class for the Airport Problem. It launches the threads for all entities of the problem.
 	   *
 	   *    @param args runtime arguments
 	   */
@@ -24,14 +24,11 @@ public class AirLift {
 	    Plane plane;											// reference to the plane
 	    DestinationAirport destAirport;							// reference to the destination airport
 	    GeneralRepos repos;                                     // reference to the general repository
-        int nIter;                                              // number of iterations of the customer life cycle
         String fileName;                                        // logging file name
         char opt;                                               // selected option
         boolean success;                                        // end of operation flag
         
         GenericIO.writelnString ("\n" + "Problem of the AirLift\n");
-        //GenericIO.writeString ("Number of iterations of the customer life cycle? ");
-        nIter = 0;//GenericIO.readlnInt ();
         do
         { GenericIO.writeString ("Logging file name? ");
           fileName = "y";//GenericIO.readlnString ();
@@ -47,7 +44,7 @@ public class AirLift {
              else success = true;
         } while (!success);
 
-        repos = new GeneralRepos (fileName, nIter);
+        repos = new GeneralRepos (fileName);
         
         airport = new DepartureAirport (repos);
         plane = new Plane (repos);

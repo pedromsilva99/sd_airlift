@@ -195,7 +195,6 @@ public class DepartureAirport extends Thread {
 				return true; // the hostess wait has come to an end
 			}
 		}
-		int hostessId = ((Hostess) Thread.currentThread()).getHostessId();
 		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
 		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		next_fly = false;
