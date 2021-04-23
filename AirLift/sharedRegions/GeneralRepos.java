@@ -86,7 +86,7 @@ public class GeneralRepos {
 	    {
 	    	pilotState = state;
 	    	if (pilotState==PilotStates.FLYINGBACK) 
-	    		reportSpecificStatus("\nFlight " + flightNumber + ": returning.");
+	    		reportSpecificStatus("\nFlight " + flightNumber++ + ": returning.");
 		
 	       reportStatus ();
 	    }
@@ -114,7 +114,7 @@ public class GeneralRepos {
 	    {
 	       hostessState = state;
 	       if (hostessState  ==HostessStates.READYTOFLY)
-	    	   reportSpecificStatus("\nFlight " + flightNumber++ + " : departed with " +inFlight + " passengers.");
+	    	   reportSpecificStatus("\nFlight " + flightNumber + " : departed with " +inFlight + " passengers.");
 	       reportStatus ();
 	    }
 	    
