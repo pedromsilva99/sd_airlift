@@ -4,7 +4,7 @@ public final class SimulPar {
 		
 
 	  /**
-	   *   Number of minimum people in plane.
+	   *   Number of minimum people in plane (before last flight).
 	   */
 
 	   public static final int minInPlane = 5;
@@ -14,6 +14,7 @@ public final class SimulPar {
 	   */
 
 	   public static final int maxInPlane=10;
+	   
 	   /**
 	   *   Number of pilots.
 	   */
@@ -32,11 +33,11 @@ public final class SimulPar {
 	   */  
 
 	   public static final int nPassengers = 21;   
-	  /**
+	  
+	   /**
 	   *   It can not be instantiated.
 	   */
 	   
-
 	   private SimulPar ()
 	   { }
 }

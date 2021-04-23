@@ -3,6 +3,13 @@ package entities;
 import genclass.GenericIO;
 import sharedRegions.DepartureAirport;
 
+/**
+ *   Hostess thread.
+ *
+ *   It simulates the hostess life cycle.
+ *   Static solution.
+ */
+
 public class Hostess extends Thread {
 	/**
 	 * Hostess identification.
@@ -21,15 +28,21 @@ public class Hostess extends Thread {
 	 */
 
 	private final DepartureAirport airport;
+	
+	/**
+	 * Control variable to know when to break the cycle.
+	 */
+	
+	private Boolean endOfDay;
 
 	/**
 	 * Instantiation of a hostess thread.
 	 *
-	 * @param name     thread name
-	 * @param barberId barber id
-	 * @param bShop    reference to the barber shop
+	 * @param name       thread name
+	 * @param hostessId  hostess id
+	 * @param airport    reference to the departure airport
 	 */
-	private Boolean endOfDay;
+	
 
 	public Hostess(String name, int hostessId, DepartureAirport airport) {
 		super(name);
@@ -118,18 +131,5 @@ public class Hostess extends Thread {
 		GenericIO.writelnString("\033[41m Hostess End Of Life \033[0m");
 
 	}
-
-	/**
-	 * 
-	 *
-	 * Internal operation?
-	 */
-
-//	     private void checkDocuments() {
-//	    	 try
-//	         { sleep ((long) (1 + 50 * Math.random ()));
-//	         }
-//	         catch (InterruptedException e) {}
-//	     }
-
+	
 }

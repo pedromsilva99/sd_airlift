@@ -3,6 +3,13 @@ package entities;
 import genclass.GenericIO;
 import sharedRegions.*;
 
+/**
+ *   Passenger thread.
+ *
+ *   It simulates the passenger life cycle.
+ *   Static solution.
+ */
+
 public class Passenger extends Thread {
 
 	/**
@@ -39,8 +46,10 @@ public class Passenger extends Thread {
 	 * Instantiation of a Passenger thread.
 	 *
 	 * @param name        thread name
-	 * @param passengerId Passenger id
+	 * @param passengerId passenger id
 	 * @param airport     reference to the departure airport
+	 * @param plane 	  reference to the plane
+	 * @param destAirport reference to the destination airport
 	 */
 
 	public Passenger(String name, int passengerId, DepartureAirport airport, Plane plane,
@@ -105,7 +114,6 @@ public class Passenger extends Thread {
 		airport.showDocuments();
 		plane.boardThePlane();
 		plane.leaveThePlane();
-
 		GenericIO.writelnString("\033[41m Passenger End Of Life \033[0m");
 
 	}
@@ -113,7 +121,7 @@ public class Passenger extends Thread {
 	/**
 	 * 
 	 *
-	 * Internal operation Going to Airport
+	 * Internal operation Travel to Airport
 	 */
 
 	private void travelToAirport() {

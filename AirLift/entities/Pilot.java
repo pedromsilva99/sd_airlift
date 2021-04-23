@@ -3,6 +3,13 @@ package entities;
 import genclass.GenericIO;
 import sharedRegions.*;
 
+/**
+ *   Pilot thread.
+ *
+ *   It simulates the passenger life cycle.
+ *   Static solution.
+ */
+
 public class Pilot extends Thread{
 	/**
 	   *  Pilot identification.
@@ -34,16 +41,22 @@ public class Pilot extends Thread{
 
 	   private final DestinationAirport destAirport;
 	   
+	   /**
+	    * Control variable to know when to break the cycle.
+		*/
 	   
 	   private Boolean endOfDay;
 	   
 	   /**
 	    *   Instantiation of a Pilot thread.
 	    *
-	    *     @param name thread name
-	    *     @param barberId Pilot id
-	    *     @param airport reference to the departure airport
+	    *     @param name         thread name
+	    *     @param pilotId      pilot id
+	    *     @param airport      reference to the departure airport
+	    *     @param plane 	      reference to the plane
+	    *     @param destAirport  reference to the destination airport
 	    */
+	   
 	    public Pilot  (String name, int pilotId, DepartureAirport airport, Plane plane, DestinationAirport destAirport)
 	    {
 	       super (name);
