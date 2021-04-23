@@ -133,6 +133,10 @@ public class DepartureAirport extends Thread {
 	 }
 	 
 	 public synchronized void informPlaneReadyToTakeOff() {
+		 try {
+			sleep((long) (3 + 100 * Math.random()));
+		 } catch (InterruptedException e) {
+		 }
 		 ((Hostess) Thread.currentThread()).setHostessState(HostessStates.READYTOFLY);
 		 repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		 plane_ready_to_fly = true;
@@ -145,7 +149,8 @@ public class DepartureAirport extends Thread {
 
 		if ((passengersOnBoard >= SimulPar.minInPlane && nLine == 0) || passengersOnBoard == SimulPar.maxInPlane
 				|| ((nLeft + passengersOnBoard) <= SimulPar.minInPlane && nLine == 0)) {
-			
+			((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
+			repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 			return -1;
 		}
 		while (nLine == 0) { // the hostess waits for a passenger to get in the queue
@@ -215,8 +220,8 @@ public class DepartureAirport extends Thread {
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
-		repos.setQueue(-1);
-		repos.setFlight(1);
+//		repos.setQueue(-1);
+//		repos.setFlight(1);
 		
 		notifyAll();
 		passengersOnBoard++;
@@ -227,10 +232,6 @@ public class DepartureAirport extends Thread {
 
 	 public synchronized void informPlaneReadyForBoarding() {
 		 
-		try {
-			sleep((long) (3 + 20 * Math.random()));
-		} catch (InterruptedException e) {
-		}
 		flightNumber++;
 		repos.reportSpecificStatus("\nFlight " + flightNumber + ": boarding started."); 
 		 
@@ -262,10 +263,7 @@ public class DepartureAirport extends Thread {
 	 }
 
 	 public synchronized void parkAtTransferGate() {
-		try {
-			sleep((long) (5 + 100 * Math.random()));
-		} catch (InterruptedException e) {
-		}
+		
 		((Pilot) Thread.currentThread()).setPilotState(PilotStates.ATTRANSFERGATE);
 		repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 		GenericIO.writelnString("PLANE AT TRANSFER GATE");

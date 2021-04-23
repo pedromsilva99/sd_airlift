@@ -164,8 +164,8 @@ public class GeneralRepos {
 	          { GenericIO.writelnString ("The operation of creating the file " + logFileName + " failed!");
 	            System.exit (1);
 	          }
-	       log.writelnString (" Problem of the Air Lift");
-	       log.writelnString ("\nNumber of iterations = " + nIter + "\n");
+	       log.writelnString (" 			Airlift - Description of the internal state\n");
+	       //log.writelnString ("\nNumber of iterations = " + nIter + "\n");
 	       log.writelnString ("  PT   HT    P00   P01   P02   P03   P04   P05   P06   P07   P08   P09   P10"
 	       		+ "   P11   P12   P13   P14   P15   P16   P17   P18   P19   P20  InQ  InF  PTAL\n");
 

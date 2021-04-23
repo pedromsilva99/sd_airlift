@@ -10,7 +10,8 @@ public class Plane extends Thread{
 		/**
 	    *  Number of pasengers in the plane.
 	    */
-	
+		
+		private int [] nPassForFlight;
 	    private int nPassengers = 0;
 	    private int nPassengersLeft = 0;
 	    
@@ -47,6 +48,7 @@ public class Plane extends Thread{
 		public Plane (GeneralRepos repos)
 		   {
 			  passen = new Passenger [SimulPar.nPassengers];
+			  nPassForFlight = new int [5];
 		      for (int i = 0; i < SimulPar.nPassengers; i++)
 		    	  passen[i] = null;
 		      try
@@ -65,6 +67,8 @@ public class Plane extends Thread{
 			  nPassengers++;
 		      int passengerId = ((Passenger) Thread.currentThread ()).getPassengerId ();
 		      ((Passenger) Thread.currentThread ()).setPassengerState (PassengerStates.INFLIGHT);
+		      repos.setFlight(1);
+		      repos.setQueue(-1);
 		      repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 		      GenericIO.writelnString ("\u001B[45mPASSENGER IN FLIGHT " + passengerId + "\u001B[0m");
 		      try
@@ -91,6 +95,7 @@ public class Plane extends Thread{
 	        
 	        flightNumber++;
 	        repos.reportSpecificStatus("\nFlight " + flightNumber + " : departed with " + nPassengers + " passengers.");
+	        nPassForFlight[flightNumber-1] = nPassengers;
 	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
 	        repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	        GenericIO.writelnString ("\u001B[45mPLANE FLYING TO DESTINATION AIRPORT \u001B[0m");
@@ -104,6 +109,8 @@ public class Plane extends Thread{
 	       { sleep ((long) (1 + 100 * Math.random ()));
 	       }
 	       catch (InterruptedException e) {}
+	       
+	       repos.reportSpecificStatus("Flight " + flightNumber +": arrived.");
 	       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.DEBOARDING);
 	       repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	       GenericIO.writelnString ("PLANE ARRIVED");
@@ -165,6 +172,13 @@ public class Plane extends Thread{
 		      
 		      return false;
 		   }
+		
+		public void lastPrint() {
+			repos.reportSpecificStatus("\nAirlift sum up:");
+			for (int i=1; i<=flightNumber; i++) {
+				repos.reportSpecificStatus("Flight " + i + " transported " + nPassForFlight[i-1] + "passengers");
+			}
+		}
 		
 		
 		
