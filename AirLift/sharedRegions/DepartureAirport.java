@@ -85,19 +85,20 @@ public class DepartureAirport extends Thread {
 		Passenger passenger = ((Passenger) Thread.currentThread());
 		passengerId = passenger.getPassengerId();
 		passen[passengerId] = passenger;
-		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
-		repos.setQueue(1);
-		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());	
-		nLine++;
-		GenericIO.writelnString(
-				"\033[0;91m" + "Pasenger " + passengerId + " waiting in queue in " + nLine + " position" + "\u001B[0m");
-
+				
 		try {
 			waitingLine.write(passengerId); // the customer sits down to wait for his turn
 		} catch (MemException e) {
 			GenericIO.writelnString("Insertion of customer id in waiting departure FIFO failed: " + e.getMessage());
 			System.exit(1);
 		}
+		nLine++;
+		
+		GenericIO.writelnString(
+				"\033[0;91m" + "Pasenger " + passengerId + " waiting in queue in " + nLine + " position" + "\u001B[0m");
+		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
+		repos.setQueue(1);
+		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());	
 		notifyAll();
 
 		while (passengerId != calledPassengerId) {
@@ -114,16 +115,14 @@ public class DepartureAirport extends Thread {
 		Passenger passenger = ((Passenger) Thread.currentThread());
 		passengerId = passenger.getPassengerId();
 		passen[passengerId] = passenger;
-		passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
-		repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
+		//passen[passengerId].setPassengerState(PassengerStates.INQUEUE);
+		//repos.setPassengerState (passengerId, ((Passenger) Thread.currentThread ()).getPassengerState ());
 
 		calledPassengerDocuments = passengerId;
 		GenericIO.writelnString("\033[42m-Passenger " + passengerId + " giving his doccuments\033[0m");
 		notifyAll();
-		while (passenger
-				.getPassengerState() != PassengerStates.INFLIGHT) { /*
-																	 * the customer waits for the service to be executed
-																	 */
+		while (
+				passenger.getPassengerState() != PassengerStates.INFLIGHT) { 
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -137,6 +136,8 @@ public class DepartureAirport extends Thread {
 			sleep((long) (3 + 100 * Math.random()));
 		 } catch (InterruptedException e) {
 		 }
+
+		 //repos.reportSpecificStatus("\nFlight " + flightNumber + " : departed with " +passengersOnBoard + " passengers.");
 		 ((Hostess) Thread.currentThread()).setHostessState(HostessStates.READYTOFLY);
 		 repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		 plane_ready_to_fly = true;
@@ -146,24 +147,22 @@ public class DepartureAirport extends Thread {
 
 	 public synchronized int waitForNextPassenger() { // hostess function
 		GenericIO.writelnString("\033[41mPassengers in line " + nLine + "\033[0m");
-
+		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
+		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+		
 		if ((passengersOnBoard >= SimulPar.minInPlane && nLine == 0) || passengersOnBoard == SimulPar.maxInPlane
-				|| ((nLeft + passengersOnBoard) <= SimulPar.minInPlane && nLine == 0)) {
-			((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
-			repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+				|| ( nLine == 0 && nLeft==0)) {
+			plane_ready_to_fly = true;
+			passengersOnBoard = 0;
+			notifyAll();
 			return -1;
 		}
 		while (nLine == 0) { // the hostess waits for a passenger to get in the queue
-			try {
-
-				wait();
+			try {wait();
 			} catch (Exception e) {
 				return -1; // the hostess wait has come to an end
 			}
 		}
-
-		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
-		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		
 		if (nLine > 0)
 			nLine -= 1; // the hostess takes notice some one is in Line
@@ -220,9 +219,7 @@ public class DepartureAirport extends Thread {
 
 		GenericIO.writelnString("Checking Doccuments of passenger " + waitPassengerId);
 		passen[waitPassengerId].setPassengerState(PassengerStates.INFLIGHT);
-//		repos.setQueue(-1);
-//		repos.setFlight(1);
-		
+
 		notifyAll();
 		passengersOnBoard++;
 		nLeft--;

@@ -94,7 +94,6 @@ public class Plane extends Thread{
 	        GenericIO.writelnString ("NPassengers = "+nPassengers);
 	        
 	        flightNumber++;
-	        repos.reportSpecificStatus("\nFlight " + flightNumber + " : departed with " + nPassengers + " passengers.");
 	        nPassForFlight[flightNumber-1] = nPassengers;
 	        ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.FLYINGFORWARD);
 	        repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());

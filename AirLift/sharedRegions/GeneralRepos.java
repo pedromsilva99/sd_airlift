@@ -43,7 +43,12 @@ public class GeneralRepos {
 	   */
 
 	   private int inQueue = 0;
-	   
+	   /**
+	   *  Number of flight
+	   */
+
+	   private int flightNumber = 1;
+		   
 	  /**
 	   *  Number of passengers in the plane
 	   */
@@ -86,6 +91,9 @@ public class GeneralRepos {
 	    public synchronized void setPilotState (int state)
 	    {
 	    	pilotState = state;
+	    	if (pilotState==PilotStates.FLYINGBACK) 
+	    		reportSpecificStatus("\nFlight " + flightNumber + ": returning.");
+		
 	       reportStatus ();
 	    }
 
@@ -111,6 +119,8 @@ public class GeneralRepos {
 	    public synchronized void setHostessState (int state)
 	    {
 	       hostessState = state;
+	       if (hostessState  ==HostessStates.READYTOFLY)
+	    	   reportSpecificStatus("\nFlight " + flightNumber++ + " : departed with " +inFlight + " passengers.");
 	       reportStatus ();
 	    }
 	    

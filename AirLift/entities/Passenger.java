@@ -118,7 +118,7 @@ public class Passenger extends Thread {
 
 	private void travelToAirport() {
 		try {
-			sleep((long) (3 + 100 * Math.random()));
+			sleep((long) (3 + 1000 * Math.random()));
 		} catch (InterruptedException e) {
 		}
 	}
