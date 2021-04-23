@@ -213,7 +213,7 @@ public class DepartureAirport extends Thread {
 			}
 		}
 		
-		repos.reportSpecificStatus("\n Flight " + flightNumber + ": passenger " + waitPassengerId + " checked.");
+		repos.reportSpecificStatus("\nFlight " + flightNumber + ": passenger " + waitPassengerId + " checked.");
 		
 		((Hostess) Thread.currentThread()).setHostessState(HostessStates.CHECKPASSENGER);
 		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());

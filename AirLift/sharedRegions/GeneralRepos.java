@@ -167,7 +167,7 @@ public class GeneralRepos {
 	       log.writelnString (" 			Airlift - Description of the internal state\n");
 	       //log.writelnString ("\nNumber of iterations = " + nIter + "\n");
 	       log.writelnString ("  PT   HT    P00   P01   P02   P03   P04   P05   P06   P07   P08   P09   P10"
-	       		+ "   P11   P12   P13   P14   P15   P16   P17   P18   P19   P20  InQ  InF  PTAL\n");
+	       		+ "   P11   P12   P13   P14   P15   P16   P17   P18   P19   P20  InQ  InF  PTAL");
 
 	       if (!log.close ())
 	          { GenericIO.writelnString ("The operation of closing the file " + logFileName + " failed!");
@@ -195,17 +195,17 @@ public class GeneralRepos {
 	           }
 	        
 	        switch (pilotState)
-	        { case PilotStates.ATTRANSFERGATE:     lineStatus += " ATRG ";
+	        { case PilotStates.ATTRANSFERGATE:     lineStatus += "ATRG ";
 	                                        	   break;
-	          case PilotStates.READYFORBOARDING:   lineStatus += " RDFB ";
+	          case PilotStates.READYFORBOARDING:   lineStatus += "RDFB ";
 	                                        	   break;
-	          case PilotStates.WAITINGFORBOARDING: lineStatus += " WTFB ";
+	          case PilotStates.WAITINGFORBOARDING: lineStatus += "WTFB ";
               									   break;
-	          case PilotStates.FLYINGFORWARD:      lineStatus += " FLFW ";
+	          case PilotStates.FLYINGFORWARD:      lineStatus += "FLFW ";
 	          									   break;
-	          case PilotStates.DEBOARDING:         lineStatus += " DRPP ";
+	          case PilotStates.DEBOARDING:         lineStatus += "DRPP ";
 												   break;
-	          case PilotStates.FLYINGBACK:         lineStatus += " FLBK ";
+	          case PilotStates.FLYINGBACK:         lineStatus += "FLBK ";
               									   break;
 	        }
 	        switch (hostessState)
@@ -230,7 +230,7 @@ public class GeneralRepos {
 	                                               	  break;
 	          }
 	        
-	        lineStatus += " " + inQueue + "    " + inFlight + "    " + inDestination;
+	        lineStatus += String.format(" %2s  %2s  %2s ", inQueue, inFlight, inDestination);//" " + inQueue + "    " + inFlight + "    " + inDestination;
 	        log.writelnString (lineStatus);
 	        if (!log.close ())
 	           { GenericIO.writelnString ("The operation of closing the file " + logFileName + " failed!");

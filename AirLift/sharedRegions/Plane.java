@@ -110,7 +110,7 @@ public class Plane extends Thread{
 	       }
 	       catch (InterruptedException e) {}
 	       
-	       repos.reportSpecificStatus("Flight " + flightNumber +": arrived.");
+	       repos.reportSpecificStatus("\nFlight " + flightNumber +": arrived.");
 	       ((Pilot) Thread.currentThread ()).setPilotState (PilotStates.DEBOARDING);
 	       repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
 	       GenericIO.writelnString ("PLANE ARRIVED");
@@ -176,7 +176,7 @@ public class Plane extends Thread{
 		public void lastPrint() {
 			repos.reportSpecificStatus("\nAirlift sum up:");
 			for (int i=1; i<=flightNumber; i++) {
-				repos.reportSpecificStatus("Flight " + i + " transported " + nPassForFlight[i-1] + "passengers");
+				repos.reportSpecificStatus("Flight " + i + " transported " + nPassForFlight[i-1] + " passengers");
 			}
 		}
 		

@@ -34,11 +34,11 @@ public class AirLift {
         nIter = 0;//GenericIO.readlnInt ();
         do
         { GenericIO.writeString ("Logging file name? ");
-          fileName = GenericIO.readlnString ();
+          fileName = "y";//GenericIO.readlnString ();
           if (FileOp.exists (".", fileName))
              { do
                { GenericIO.writeString ("There is already a file with this name. Delete it (y - yes; n - no)? ");
-                 opt = GenericIO.readlnChar ();
+                 opt = 'y';//GenericIO.readlnChar ();
                } while ((opt != 'y') && (opt != 'n'));
                if (opt == 'y')
                   success = true;
