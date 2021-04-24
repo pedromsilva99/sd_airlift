@@ -97,6 +97,13 @@ public class Pilot extends Thread{
 
 	/**
 	 *   Life cycle of the pilot.
+	 * When the pilot is created, while there is passengers to fly he follows a routine:
+	 * <p>Informs the hostess that the plane is ready for boarding
+	 * <p>Waits for the hostess to inform that all the passengers are in board
+	 * <p>Flies to the destination airport and then informs the passengers to leave the plane
+	 * <p>Waits for the plane to be empty and flies back to the departure airport
+	 * <p>Park the plane at the transfer gate
+	 * 
 	 */
 
 	@Override
