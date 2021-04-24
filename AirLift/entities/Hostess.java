@@ -35,7 +35,7 @@ public class Hostess extends Thread {
 	private final Plane plane;
 
 	/**
-	 * Control variable to know when to break the cycle.
+	 * Control variable to know if there is no passengers to fly
 	 */
 	private Boolean endOfDay;
 
@@ -88,6 +88,9 @@ public class Hostess extends Thread {
 
 	/**
 	 * Life cycle of the hostess.
+	 * When the hostess is created, she waits for the pilot to arrive at the Transfer Gate
+	 * <p>After the pilot
+	 * 
 	 */
 
 	@Override

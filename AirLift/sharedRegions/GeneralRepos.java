@@ -134,7 +134,7 @@ public class GeneralRepos {
 
 	public synchronized void setFlight (int number){inFlight += number;}
 
-	
+
 
 	/**
 	 *   Set inDestination number.
