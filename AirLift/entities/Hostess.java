@@ -47,8 +47,6 @@ public class Hostess extends Thread {
 	 * @param airport    reference to the departure airport
 	 * @param plane    	 reference to the plane
 	 */
-
-
 	public Hostess(String name, int hostessId, DepartureAirport airport, Plane plane) {
 		super(name);
 		this.hostessId = hostessId;
@@ -88,8 +86,12 @@ public class Hostess extends Thread {
 
 	/**
 	 * Life cycle of the hostess.
-	 * When the hostess is created, she waits for the pilot to arrive at the Transfer Gate
-	 * <p>After the pilot
+	 * When the hostess is created, while there is passengers to fly she follows a routine:
+	 * <p>waits for the pilot to arrive at the Transfer Gate
+	 * <p>After the plane is ready for boarding the Hostess Waits for a passenger to Call
+	 * <p>Then ask the passenger to check his documents
+	 * <p>If the plane is full or there is no more passengers to fly, she informs the pilot to take off
+	 * <p>otherwise she calls for the next passenger
 	 * 
 	 */
 
@@ -97,12 +99,8 @@ public class Hostess extends Thread {
 	public void run() {
 		GenericIO.writelnString("\nHostess RUN\n");
 		while (!endOfDay) {
-			boolean endOp;
-			//
-			endOp = airport.prepareForPassBoarding();
-			if (endOp)
-				break;
-			// ---------------------------------------------------------------------------------------
+			airport.prepareForPassBoarding();
+
 			while (hostessState != HostessStates.READYTOFLY) {
 				int waitPassengerId = airport.waitForNextPassenger();
 				if (waitPassengerId >= 0)

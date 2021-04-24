@@ -170,7 +170,7 @@ public class DepartureAirport extends Thread {
 		return passengerId;
 	 }
 
-	 public synchronized boolean prepareForPassBoarding() // hostess function
+	 public synchronized void prepareForPassBoarding() // hostess function
 	 {
 		
 		while (!plane_ready_boarding) // the hostess waits for the plane to be ready
@@ -179,7 +179,8 @@ public class DepartureAirport extends Thread {
 				GenericIO.writelnString("\n\033[0;34mHostess Waiting for Plane\033[0m\n");
 				wait();
 			} catch (Exception e) {
-				return true; // the hostess wait has come to an end
+				System.exit(0);
+				return ; // the hostess wait has come to an end
 			}
 		}
 //		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
@@ -187,7 +188,7 @@ public class DepartureAirport extends Thread {
 		next_fly = false;
 		plane_ready_boarding = false;
 		passengersOnBoard = 0;
-		return false;
+
 	 }
 
 	 public synchronized void checkDocuments(int waitPassengerId) {
