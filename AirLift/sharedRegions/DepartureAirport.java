@@ -182,8 +182,8 @@ public class DepartureAirport extends Thread {
 				return true; // the hostess wait has come to an end
 			}
 		}
-		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
-		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+//		((Hostess) Thread.currentThread()).setHostessState(HostessStates.WAITFORPASSENGER);
+//		repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
 		next_fly = false;
 		plane_ready_boarding = false;
 		passengersOnBoard = 0;

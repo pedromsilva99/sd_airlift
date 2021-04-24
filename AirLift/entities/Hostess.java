@@ -22,25 +22,21 @@ public class Hostess extends Thread {
 	/**
 	 * Hostess state.
 	 */
-
 	private int hostessState;
 
 	/**
 	 * Reference to the departure airport.
 	 */
-
 	private final DepartureAirport airport;
-	
+
 	/**
 	 * Reference to the plane.
 	 */
-
 	private final Plane plane;
-	
+
 	/**
 	 * Control variable to know when to break the cycle.
 	 */
-	
 	private Boolean endOfDay;
 
 	/**
@@ -49,8 +45,9 @@ public class Hostess extends Thread {
 	 * @param name       thread name
 	 * @param hostessId  hostess id
 	 * @param airport    reference to the departure airport
+	 * @param plane    	 reference to the plane
 	 */
-	
+
 
 	public Hostess(String name, int hostessId, DepartureAirport airport, Plane plane) {
 		super(name);
@@ -66,40 +63,28 @@ public class Hostess extends Thread {
 	 *
 	 * @param id hostess id
 	 */
-
-	public void setHostessId(int id) {
-		hostessId = id;
-	}
+	public void setHostessId(int id) {hostessId = id;}
 
 	/**
 	 * Get hostess id.
 	 *
 	 * @return hostess id
 	 */
-
-	public int getHostessId() {
-		return hostessId;
-	}
+	public int getHostessId() {return hostessId;}
 
 	/**
 	 * Set hostess state.
 	 *
 	 * @param state new hostess state
 	 */
-
-	public void setHostessState(int state) {
-		hostessState = state;
-	}
+	public void setHostessState(int state) {hostessState = state;}
 
 	/**
 	 * Get hostess state.
 	 *
 	 * @return hostess state
 	 */
-
-	public int getHostessState() {
-		return hostessState;
-	}
+	public int getHostessState() {return hostessState;}
 
 	/**
 	 * Life cycle of the hostess.
@@ -110,7 +95,7 @@ public class Hostess extends Thread {
 		GenericIO.writelnString("\nHostess RUN\n");
 		while (!endOfDay) {
 			boolean endOp;
-				//
+			//
 			endOp = airport.prepareForPassBoarding();
 			if (endOp)
 				break;
@@ -121,12 +106,9 @@ public class Hostess extends Thread {
 					airport.checkDocuments(waitPassengerId);
 				else if (waitPassengerId == -SimulPar.nPassengers-1) {
 					GenericIO.writelnString("ERROR");
-					
-					//hostessState = HostessStates.READYTOFLY;
-					// System.exit(0);
+					System.exit(0);
 				} else {
 					plane.informPlaneReadyToTakeOff(waitPassengerId*-1);
-
 				}
 			}
 			airport.waitForNextFlight();
