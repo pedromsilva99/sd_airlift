@@ -4,6 +4,10 @@ import main.*;
 import entities.*;
 import genclass.GenericIO;
 
+/**
+ * Destination Airport shared Region
+ */
+
 public class DestinationAirport extends Thread{
 	
 	/**

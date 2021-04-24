@@ -68,9 +68,7 @@ public class Passenger extends Thread {
 	 * @param id Passenger id
 	 */
 
-	public void setPassengerId(int id) {
-		passengerId = id;
-	}
+	public void setPassengerId(int id) {passengerId = id;}
 
 	/**
 	 * Get Passenger id.
@@ -78,9 +76,7 @@ public class Passenger extends Thread {
 	 * @return Passenger id
 	 */
 
-	public int getPassengerId() {
-		return passengerId;
-	}
+	public int getPassengerId() {return passengerId;}
 
 	/**
 	 * Set Passenger state.
@@ -88,9 +84,7 @@ public class Passenger extends Thread {
 	 * @param state new Passenger state
 	 */
 
-	public void setPassengerState(int state) {
-		passengerState = state;
-	}
+	public void setPassengerState(int state) {passengerState = state;}
 
 	/**
 	 * Get Passenger state.
@@ -98,9 +92,7 @@ public class Passenger extends Thread {
 	 * @return Passenger state
 	 */
 
-	public int getPassengerState() {
-		return passengerState;
-	}
+	public int getPassengerState() {return passengerState;}
 
 	/**
 	 * Life cycle of the passenger.

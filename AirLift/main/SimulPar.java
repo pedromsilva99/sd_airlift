@@ -1,7 +1,10 @@
 package main;
 
+/**
+ *    Definition of the simulation parameters.
+ */
+
 public final class SimulPar {
-		
 
 	  /**
 	   *   Number of minimum people in plane (before last flight).

@@ -60,7 +60,6 @@ public class GeneralRepos {
 	   *   Instantiation of a general repository object.
 	   *
 	   *     @param logFileName name of the logging file
-	   *     @param nIter number of iterations of the customer life cycle
 	   */
 	   
 	   public GeneralRepos (String logFileName)
