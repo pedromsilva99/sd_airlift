@@ -96,6 +96,12 @@ public class Passenger extends Thread {
 
 	/**
 	 * Life cycle of the passenger.
+	 * <p>When the Passenger is created he travels to the airport
+	 * At the airport he waits in a queue to be called by the hostess.
+	 * When called by the host he shows his documents and boards the plane.
+	 * Inside the plane he waits for the pilot to travel to the destination 
+	 * and when the pilot announces the arrival he leaves the plane.
+	 * 
 	 */
 
 	@Override
@@ -107,12 +113,10 @@ public class Passenger extends Thread {
 		plane.boardThePlane();
 		plane.leaveThePlane();
 		GenericIO.writelnString("\033[41m Passenger End Of Life \033[0m");
-
 	}
 
 	/**
 	 * 
-	 *
 	 * Internal operation Travel to Airport
 	 */
 
