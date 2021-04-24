@@ -5,8 +5,8 @@ import genclass.FileOp;
 import genclass.GenericIO;
 import sharedRegions.*;
 /**
- *   Simulation of the Problem of the Air Lift.
- *   
+ *   Main class for the Air Lift Problem.
+ *   It launches the threads for all entities of the problem.
  */
 public class AirLift {
 	/**
@@ -16,7 +16,7 @@ public class AirLift {
 	 */
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		Pilot [] pilot = new Pilot [SimulPar.nPilots];					// array of pilot threads
 		Hostess [] hostess = new Hostess [SimulPar.nHostess];          	// array of hostess threads
 		Passenger [] passenger = new Passenger [SimulPar.nPassengers];  // array of passenger threads
