@@ -137,7 +137,6 @@ public class GeneralRepos {
 	    public synchronized void setQueue (int number)
 	    {
 	       inQueue += number;
-	       //reportStatus ();
 	    }
 	    
 	   /**
@@ -149,7 +148,16 @@ public class GeneralRepos {
 	    public synchronized void setFlight (int number)
 	    {
 	       inFlight += number;
-	       //reportStatus ();
+	    }
+	    
+	    /**
+	    *   Get in flight passengers.
+	    *  
+	    */
+
+	    public synchronized int getFlight ()
+	    {
+	       return inFlight ;   
 	    }
 	    
 	   /**

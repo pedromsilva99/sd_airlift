@@ -14,6 +14,7 @@ public class Plane extends Thread{
 		private int [] nPassForFlight;
 	    private int nPassengers = 0;
 	    private int nPassengersLeft = 0;
+	    private int toBoard = -1;
 	    
 	    /**
 	    *  Reference to passenger threads.
@@ -42,6 +43,11 @@ public class Plane extends Thread{
 	    /**
 	     *  Variable that sinalizes the flight arrival
 	     */
+	 	private boolean allOnBoard = false;
+	 	
+	    /**
+	     *  Variable that sinalizes the flight arrival
+	     */
 	 	private boolean arrived = false;
 	   
 	   
@@ -61,6 +67,15 @@ public class Plane extends Thread{
 		      }
 		      this.repos = repos;
 		   }
+		/**
+	    *   Get boarded passengers.
+	    *  
+	    */
+
+	    public synchronized void setInPlane (int toBoard)
+	    {
+	       this.toBoard = toBoard;
+	    }
 		
 		public synchronized void boardThePlane ()  //hostess function
 		   {   
@@ -78,10 +93,43 @@ public class Plane extends Thread{
 		      { GenericIO.writelnString ("Insertion of customer id in plane FIFO failed: " + e.getMessage ());
 		          System.exit (1);
 		      }
+		      notifyAll();
 		      
 		      //
 		   }
-		
+		public synchronized void waitForAllInBoard() {
+
+			((Pilot) Thread.currentThread()).setPilotState(PilotStates.WAITINGFORBOARDING);
+			repos.setPilotState (((Pilot) Thread.currentThread ()).getPilotState ());
+			while (!allOnBoard) // the pilot waits for the plane to be ready
+			{
+				try {
+					GenericIO.writelnString("\n\033[44mPilot Waiting for all Passengers\033[0m\n");
+					wait();
+				} catch (Exception e) {
+					return; // the pilot wait has come to an end
+				}
+			}	
+			
+			GenericIO.writelnString("Everybody on board");
+			GenericIO.writelnString("Passengers left: " + nPassengersLeft);
+		 }
+		public synchronized void informPlaneReadyToTakeOff(int nboarded) {
+			while (nboarded!= nPassengers)
+			{
+				try {
+					GenericIO.writelnString("\n\033[44mPilot Waiting for all Passengers\033[0m\n");
+					wait();
+				} catch (Exception e) {
+					return; // the pilot wait has come to an end
+				}
+			}
+
+			 ((Hostess) Thread.currentThread()).setHostessState(HostessStates.READYTOFLY);
+			 repos.setHostessState (((Hostess) Thread.currentThread ()).getHostessState ());
+			 allOnBoard = true;
+			 notifyAll();
+		 }
 		
 		
 		public synchronized void flyToDestinationPoint ()  //hostess function
@@ -138,9 +186,8 @@ public class Plane extends Thread{
 	        }
 	        nPassengers=0;
 	        nPassengersLeft=0;
-	       arrived=false;
-	       
-	       
+	        allOnBoard = false;
+	        arrived=false;  
 	    }
 		
 		public synchronized boolean leaveThePlane ()  //hostess function

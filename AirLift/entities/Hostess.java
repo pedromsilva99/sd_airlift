@@ -1,7 +1,9 @@
 package entities;
 
 import genclass.GenericIO;
+import main.SimulPar;
 import sharedRegions.DepartureAirport;
+import sharedRegions.Plane;
 
 /**
  *   Hostess thread.
@@ -30,6 +32,12 @@ public class Hostess extends Thread {
 	private final DepartureAirport airport;
 	
 	/**
+	 * Reference to the plane.
+	 */
+
+	private final Plane plane;
+	
+	/**
 	 * Control variable to know when to break the cycle.
 	 */
 	
@@ -44,11 +52,12 @@ public class Hostess extends Thread {
 	 */
 	
 
-	public Hostess(String name, int hostessId, DepartureAirport airport) {
+	public Hostess(String name, int hostessId, DepartureAirport airport, Plane plane) {
 		super(name);
 		this.hostessId = hostessId;
 		hostessState = HostessStates.WAITFORFLIGHT;
 		this.airport = airport;
+		this.plane = plane;
 		endOfDay = false;
 	}
 
@@ -100,36 +109,29 @@ public class Hostess extends Thread {
 	public void run() {
 		GenericIO.writelnString("\nHostess RUN\n");
 		while (!endOfDay) {
-			//int passengerId; // passenger id
 			boolean endOp;
-			int i = 0;
-			while (i == 0) {
 				//
-				endOp = airport.prepareForPassBoarding();
-				if (endOp)
-					break;
+			endOp = airport.prepareForPassBoarding();
+			if (endOp)
+				break;
+			// ---------------------------------------------------------------------------------------
+			while (hostessState != HostessStates.READYTOFLY) {
+				int waitPassengerId = airport.waitForNextPassenger();
+				if (waitPassengerId >= 0)
+					airport.checkDocuments(waitPassengerId);
+				else if (waitPassengerId == -SimulPar.nPassengers-1) {
+					GenericIO.writelnString("ERROR");
+					
+					//hostessState = HostessStates.READYTOFLY;
+					// System.exit(0);
+				} else {
+					plane.informPlaneReadyToTakeOff(waitPassengerId*-1);
 
-				// ---------------------------------------------------------------------------------------
-				while (hostessState != HostessStates.READYTOFLY) {
-					int waitPassengerId = airport.waitForNextPassenger();
-					if (waitPassengerId >= 0)
-						airport.checkDocuments(waitPassengerId);
-					else if (waitPassengerId == -1) {
-						airport.informPlaneReadyToTakeOff();
-						//hostessState = HostessStates.READYTOFLY;
-						// System.exit(0);
-					} else {
-						GenericIO.writelnString("ERROR");
-						// System.exit(0);
-					}
-					i = 1;
 				}
-				airport.waitForNextFlight();
 			}
+			airport.waitForNextFlight();
 			endOfDay = airport.CheckEndOfDay();
 		}
 		GenericIO.writelnString("\033[41m Hostess End Of Life \033[0m");
-
 	}
-	
 }

@@ -31,7 +31,7 @@ public class AirLift {
         GenericIO.writelnString ("\n" + "Problem of the AirLift\n");
         do
         { GenericIO.writeString ("Logging file name? ");
-          fileName = "y";//GenericIO.readlnString ();
+          fileName = "y";//args[0];//GenericIO.readlnString ();
           if (FileOp.exists (".", fileName))
              { do
                { GenericIO.writeString ("There is already a file with this name. Delete it (y - yes; n - no)? ");
@@ -45,14 +45,15 @@ public class AirLift {
         } while (!success);
 
         repos = new GeneralRepos (fileName);
-        
         airport = new DepartureAirport (repos);
         plane = new Plane (repos);
+        
+        
         destAirport = new DestinationAirport(repos);
         for (int i = 0; i < SimulPar.nPilots; i++)
         	pilot[i] = new Pilot ("Pilot_" + (i+1), i, airport, plane, destAirport);
         for (int i = 0; i < SimulPar.nHostess; i++)
-        	hostess[i] = new Hostess ("Hostess_" + (i+1), i, airport);
+        	hostess[i] = new Hostess ("Hostess_" + (i+1), i, airport,plane);
         for (int i = 0; i < SimulPar.nPassengers; i++)
         	passenger[i] = new Passenger ("Passenger_" + (i+1), i, airport, plane, destAirport);
         
